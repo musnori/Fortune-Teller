@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+/*========= レイアウトのためのCSS ===============*/
+p{
+text-align: center;
+padding:1px 0;
+font-size: 1.5rem;
+}
+
+/*========= ランダムに出現するテキスト ===============*/
+
+.randomAnime {
+visibility: hidden;
+
+}
+
+
+/* ボタンテキスト表示 */
+/* #text-button {
+    display: block;
+    cursor: pointer;
+    width: 160px;
+    text-align: center;
+    border: 1px solid #232323;
+  }
+   */

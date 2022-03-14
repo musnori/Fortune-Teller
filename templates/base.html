@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/button2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/button3.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enter_complete_button.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/btn-square-raised.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Ganbatta&Yoikoto.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}"> -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}"> -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@900&display=swap" rel="stylesheet"> -->
+    <title>Fortune Teller</title>
+
+    {% block header %}{% endblock %}
+
+
+
+</head>
+<body>
+    
+    {% block headline %}{% endblock %}
+    
+    <!-- <nav class="navbar navbar-light bg-light p-3">
+        <div class="container-fluid">
+          <a id="text" class="navbar-brand" href="#" style="font-size: 2.5rem;">運ポ</a>
+        </div>
+    </nav> -->
+    {% block body %}
+    {% endblock %}
+
+   
+    <footer>
+   
+        {% block footer %}{% endblock %}
+    </footer>
+  
+    
+</body>
+
+
+
+</html>

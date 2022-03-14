@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block headline %}
+<h2 class="headline" style="text-align: center; position: relative;">君は何を頑張ったのかい？</h2>
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}"> -->
+<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
+height:12%; position:absolute; left:82%;  bottom:88%;" >
+
+
+<style type="text/css">
+.headline{
+    background-color:#3C3A38;
+    color:#f5f4ef;
+    padding : 1.4em;
+    font-family: serif ;
+}
+</style>
+
+{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/createGamen.css') }}">
+{% endblock %}
+
+
+{% block body %}
+<div class="grad1"></div>
+<div class="grad2"></div>
+<div class="grad3"></div>
+
+<form class="m-5" action="/" method="POST">
+    <!-- object add -->
+    <div class="mb-3 pb-3">
+        <label for="object">Goal</label><br>
+        <select type="text" class="form-control" name="object">
+        <option value="" hidden>あなたのGoalを選択してください</option>
+        <option value="テスト">テスト</option>
+        <option value="プロジェクト">プロジェクト</option>
+        <option value="発表会">発表会</option>
+        <option value=“語学学習“>語学学習</option>
+        <option value=“ゲーム“>ゲーム</option>
+        <option value=“恋愛“>恋愛</option>
+        <option value=“就職“>就職</option>
+        <option value=“生活習慣“>生活習慣</option>
+        <option value=“受験“>受験</option>
+        <option value=“その他“>その他</option>
+        </select>
+    </div>
+    <div class="mb-3 pb-3">
+        <label for="title">タイトル</label>
+        <input type="text" class="form-control" name="title" size="30">
+    </div>
+    <div class="mb-3 pb-3">
+        <label for="detail">メモ</label>
+        <textarea type="text" class="form-control" name="detail"></textarea>
+        
+    </div>
+    <div class="mb-3 pb-3">
+        <label for="due">日付</label>
+        <input type="date" id="regist_date" name="due" required>
+    </div>
+     <!-- point add -->
+    <div hidden class="mb-3 pb-3">
+        <label for="point">Point</label>
+        <input type="number" id="dispvalue" value="1" class="form-control" name="point">
+        <input type="button" value="頑張った" onclick="document.getElementById('dispvalue').value = 1 + parseInt(document.getElementById('dispvalue').value);"  />
+    </div>
+    <!-- effort add -->
+    <div hidden class="mb-3 pb-3">
+        <label for="effort">effort</label>
+        <input type="number" id="dispvalue" value="1" class="form-control" name="effort">
+    </div>
+    <!-- lucky add -->
+    <div hidden class="mb-3 pb-3">
+        <label for="lucky">lucky</label>
+        <input type="number" id="dispvalue" value="0" class="form-control" name="lucky">
+    </div>
+    <a class="btn btn-secondary" href="/" role="button">Return</a>
+    <button type="submit" class="btn btn-secondary">Create</button>
+</form>
+
+
+
+<!-- 家計簿参考 -->
+<script>
+    var date = new Date();
+    
+    // 「年月日」を配列で取得 ( [0]:年, [1]:月, [2]:日 )
+    var dateArray = getTSDate(date);
+
+    // 登録日付に「本日の年月日」を設定
+    document.getElementById("regist_date").value = dateArray[0] + "-" + dateArray[1] + "-" + dateArray[2]
+
+  
+    /**
+     *  タイムスタンプから年月日文字列を取得
+     */       
+    function getTSDate(date){
+        var dateArray = new Array();
+        dateArray.push(zero_pad(date.getFullYear(),4));
+        dateArray.push(zero_pad(date.getMonth() + 1,2));
+        dateArray.push(zero_pad(date.getDate(),2));
+        return dateArray;
+    }
+    
+    /**
+     *  ０詰処理
+     */
+    function zero_pad(val, show_length){
+        var str_val = String(val);
+        if( str_val.length < show_length ){
+            var zero = ""; 
+            for(var i = 0; i < ( show_length - str_val.length ); i++){
+                zero += "0";
+            }
+            str_val = zero + str_val;
+        }
+        return str_val;
+    };
+    
+</script>
+{% endblock %}

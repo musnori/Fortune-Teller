@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<label>カテゴリを選択してください</label><br>
+<select name="purpose">
+<option value="jyuken">受験</option>
+<option value="game">試合</option>
+<option value="present">発表会</option>
+</select>
+
+<p id="output">日付を選択してください</p>
+<input type="date" name="date" required>
+
+
+<label for="memo"></label>
+
+<form action="//www-creators.com/rsc/receiver.php" method="post">
+    <label style="font-size: 2rem;">メモ</label><br>
+    <textarea name="message-body" placeholder="メモを入力"></textarea>
+  </form>
+  <style>
+  textarea{
+    width:90%;
+    height:90px;
+    resize:vertical;
+    position: absolute; left: 5%; 
+  }
+  </style>
+
+<a class="btn btn-outline-primary" href="/" role="button" style="position: absolute; left: 30%; bottom: 50%">戻る</a>
+
+<a href="/" class="btn-square-raised" style="position: absolute; left: 50%; bottom: 50%">入力完了</a>
+
+{% endblock %}

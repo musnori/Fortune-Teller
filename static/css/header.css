@@ -1,0 +1,18 @@
+* {
+    margin:0; padding:0;
+  }
+  header {
+    height: 100px;
+    width: 100%;
+    padding: 15px 0;
+    /* position: fixed;
+    top: 0; */
+    background-color: #337079;
+    color: white;
+  }
+  header .headline{
+      line-height: 100px;
+      float: left;
+      font-size: 30px;
+      margin-left: 100px;
+  }

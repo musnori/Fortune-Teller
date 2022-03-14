@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.btn-help {
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    background: #909192;/*ボタン色*/
+    color: #f8f2f2;/*ボタン色と同じに*/
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+    /* border-bottom: solid 3px #000000; */
+    border-radius: 3px;/*角の丸み*/
+    /* font-weight: bold; */
+    text-shadow: -1px -1px rgba(7, 7, 7, 0.44), 1px 1px rgba(0, 0, 0, 0.38);
+    font-family: serif ;
+  }
+    
+  .btn-help:active {
+    /*ボタンを押したとき*/
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+    
+  }
+  

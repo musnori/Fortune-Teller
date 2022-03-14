@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<meta charset="utf-8">
+<title>8-8 ランダムに出現</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+ <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
+<!-- <link rel="stylesheet" type="text/css" href="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/8-8/css/reset.css"> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css"> -->
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/otameshi.css') }}"> -->
+
+
+{% endblock %}
+
+
+
+
+{% block headline %}
+<h2 class="headline" style="text-align: center; position:absolute;">君なら大丈夫</h2>
+<h2 class="headline" style="text-align: center; position: relative;">Help !</h2>
+
+<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
+height:12%; position:absolute; left:82%;  bottom:88%;" >
+
+<audio src="static/BGM/tiny_dream.mp3"  autoplay></audio>
+
+<style type="text/css">
+.headline{
+    background-color:#3C3A38;
+    color:#f5f4ef;
+    padding : 1.4em;
+    font-family: serif ;
+}
+</style>
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<!-- <style>
+    body{
+        background: radial-gradient(#F2B9A1, #EA6264);
+    }
+    </style> -->
+
+
+
+<style type="text/css">
+
+
+    .mojiume{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color:#1995ee; */
+    position:absolute;
+    width:500px;
+    height:500px;
+    overflow: visible;
+    font-size: 40px;
+    font-family: serif ;
+    /* writing-mode:vertical-lr ; */
+    color : rgb(0, 0, 0);
+    }
+    </style>
+    
+    <!-- 文字の動きjavascript -->
+    <script type="text/javascript">
+
+    /* 文字埋め */
+    var mojiume = new Object();
+
+    mojiume.list = {{ title | tojson}};
+
+    mojiume.count = 0;
+    mojiume.limit = 1000;
+
+    mojiume.set = function(){
+    var span = document.createElement("span");
+    span.className = "mojiume";
+    span.style.left = ( Math.random()*70 )+"%";
+    span.style.top =( Math.random()*40 )+"%";
+    // span.style.transform =
+    // "rotate("+( ( Math.random()*120 )-60 )+"deg)";
+
+     // 文字リストからランダムに表示する場合は
+     mojiume.count = document.querySelectorAll(".mojiume").length;
+    span.textContent =
+    mojiume.list[mojiume.count];
+    document.body.appendChild( span );
+    if( document.querySelectorAll(".mojiume").length>=mojiume.limit ){
+    clearInterval( mojiume.tmr );
+    }
+    };
+    mojiume.tmr = setInterval( mojiume.set, 2000 );
+    </script>
+    
+
+
+{% endblock %}
+
+
+{% block footer %}
+
+<style type="text/css">
+    
+    footer{
+        position: absolute;/*←絶対位置*/
+        bottom: 0; /*下に固定*/
+
+        background-color:#3C3A38;
+        /* color:#f5f4ef; */
+        width: 100%;
+        font-family: serif ;
+    }
+</style>
+
+<a class="btn-help" href="/helppre" role="button">戻る</a>
+
+
+{% endblock %}

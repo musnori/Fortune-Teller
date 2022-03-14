@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/TopGamen.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+<title>運ポ</title>
+{% endblock %}
+
+{% block body %}
+
+<!-- header -->
+<!-- <header>
+<h1 class="headline"><a>運ポ</a></h1>
+</header> -->
+
+<h2 class="headline" style="text-align: left; position: relative;">Fortune Teller</h2>
+
+<style type="text/css">
+        .headline{
+            background-color:#3C3A38;
+            color:#f5f4ef;
+            padding : 1em;
+            font-family: serif ;
+        }
+        </style>
+
+
+
+<div class="NowPoint" style="position:absolute; left:725px; bottom:625px">現在の運ポイント</div>
+<div class="NowPoint1" style="position: absolute; left: 780px; bottom: 150px">{{ all_total_point }}P</div>
+
+
+<div class="area" id="Back">
+        <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+        </ul>
+</div >
+
+<style type="text/css">
+        .btn-square-raised {
+                font-size: 40px;
+        }
+       
+</style>
+
+<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/pre_graph" role="button" style="position: absolute; left: 10%; bottom: 70%">運勢診断</a>
+<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/history" role="button" style="position: absolute; left: 30%; bottom: 70%">履歴</a>
+<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/helppre" role="button" style="position: absolute; left: 50%; bottom: 70%">HELP</a>
+<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/unpograph" role="button" style="position: absolute; left: 70%; bottom: 70%">運ポグラフ</a>
+<!-- 頑張った、良い事あったページに遷移 -->
+
+<a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto"  href="/create" role="button" style="position: absolute; left: 560px; bottom: 20px">頑張った</a>
+<a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto" href="/create1" role="button" style="position: absolute; left:960px; bottom: 20px">良い事あった</a>
+
+        
+
+
+<p class="NowPoint2" id="sampleArea" style="position: absolute; right: 2%; bottom: 89.5%">通常モード</p>
+<style type="text/css">
+        .NowPoint2{
+            color:#f5f4ef;
+            font-family: serif ;
+            font-size: 50px;
+        }
+        </style>
+
+
+
+
+<!-- <input type="text" id="dispvalue" value="0" style="position: absolute; left: 40%; bottom: 60%; width:20%; height:15%"/> -->
+
+<script type="text/javascript" >
+        var sampleArea = document.getElementById("sampleArea");
+        var obj = document.getElementById("Back");
+
+        if({{all_total_point}}  > 15){
+                sampleArea.innerHTML = "ラッキーモード";
+                obj.style.backgroundColor = "#FF99CC";
+
+        // else({{all_total_point}}  > 5){
+        //         sampleArea.innerHTML = "フィーバーモード";
+        //         obj.style.backgroundColor = "#FF99CC";
+
+        }
+
+ </script>
+
+<!-- <a href="#" class="btn-real">頑張った</a> -->
+
+{% endblock %}
+
+

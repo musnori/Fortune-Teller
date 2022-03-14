@@ -1,0 +1,76 @@
+body {
+    background: #EEEEEE	;
+    animation: bgColor 10s infinite;
+  }
+  /* @keyframes bgColor {
+    0% {
+      background: hsl(201, 94%, 60%);
+    }
+    50% {
+      background: #0774af;
+    }
+    100% {
+      background: #3bb7f9;
+    }
+  } */
+
+
+.grad1,.grad2,.grad3 {
+  position: absolute;
+}
+.grad2,.grad3 {
+  opacity: 0;
+}
+.grad1 {
+  background: linear-gradient(#0584c5, #c405c4);
+  animation: grad1 10s infinite;
+}
+.grad2 {
+  background: linear-gradient(#05c468, #c405c4);
+  animation: grad2 10s infinite;
+  animation-delay: 2s;
+}
+.grad3 {
+  background: linear-gradient(#05c468, #0584c5);
+  animation: grad3 10s infinite;
+  animation-delay: 8s;
+}
+@keyframes grad1 {
+  0% {opacity: 1.0;}
+  10% {opacity: 0.8;}
+  20% {opacity: 0.6;}
+  30% {opacity: 0.4;}
+  40% {opacity: 0.2;}
+  50% {opacity: 0.1;}
+  60% {opacity: 0.2;}
+  70% {opacity: 0.4;}
+  80% {opacity: 0.6;}
+  90% {opacity: 0.8;}
+  100% {opacity: 1.0;}
+}
+@keyframes grad2 {
+  0% {opacity: 0;}
+  10% {opacity: 0.2;}
+  20% {opacity: 0.4;}
+  30% {opacity: 0.6;}
+  40% {opacity: 0.8;}
+  50% {opacity: 1.0;}
+  60% {opacity: 0.8;}
+  70% {opacity: 0.6;}
+  80% {opacity: 0.4;}
+  90% {opacity: 0.2;}
+  100% {opacity: 0;}
+}
+@keyframes grad3 {
+    0% {opacity: 0;}
+    10% {opacity: 0.2;}
+    20% {opacity: 0.4;}
+    30% {opacity: 0.6;}
+    40% {opacity: 0.8;}
+    50% {opacity: 1.0;}
+    60% {opacity: 0.8;}
+    70% {opacity: 0.6;}
+    80% {opacity: 0.4;}
+    90% {opacity: 0.2;}
+    100% {opacity: 0;}
+  }

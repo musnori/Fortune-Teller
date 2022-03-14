@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h2 class="m-5" style="text-align: center;">詳細</h2>
+<div class="card w-50 mb-3" style="margin: auto;">
+    <div class="card-body">
+        <h2 class="card-title">タイトル：{{ post.title }}</h2>
+        <span class="ml-3" style="font-size: 1em;">日付：{{ post.due.date() }}</span>
+        <ul class="list-group list-group-flush">
+            <!-- <li class="list-group-item">{{ post.due.date() }}</li> -->
+            <li class="list-group-item">メモ : {{ post.detail }}</li>
+            <li class="list-group-item">タイトル : {{ post.title }}</li>
+            <li class="list-group-item">ポイント : {{ post.point }}</li>
+          </ul>
+        
+        <!-- <p>メモ：{{ post.detail }}</p> -->
+        <!-- <p>ポイント：{{ post.point }}</p> -->
+        <a class="btn btn-outline-success" href="/" role="button">Return</a>
+        <a class="btn btn-success" href="update/{{ post.id }}" role="button">Update</a>
+    </div>
+</div>
+{% endblock %}
+

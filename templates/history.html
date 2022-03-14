@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block headline %}
+<h2 class="headline" style="text-align: center; position: relative;">これまでの記録を見てみよう！</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
+<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
+height:12%; position:absolute; left:82%;  bottom:88%;" >
+
+
+<style type="text/css">
+.headline{
+    background-color:#3C3A38;
+    color:#f5f4ef;
+    padding : 1.4em;
+    font-family: serif ;
+}
+</style>
+
+
+<p style="text-align: center" ><font size="7">得点履歴</font></p>
+{% for post in posts %}
+<div class="card w-50 mb-3" style="margin: auto;">
+    <div class=“card-body”>
+        <!-- <p>{{ post.due.date() }}</p> -->
+        <!-- <h2 class=“card-title”>タイトル : {{ post.title }}</h2>
+        <h2 class=“card-title”>ポイント : {{ post.point }}</h2> -->
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ post.due.date() }}</li>
+            <li class="list-group-item">カテゴリ : {{ post.object }}</li>
+            <li class="list-group-item">タイトル : {{ post.title }}</li>
+            <li class="list-group-item">ポイント : {{ post.point }}</li>
+          </ul>
+        <a class="btn btn-secondary btn-sm" href="/detail/{{ post.id }}" role="button" >詳細</a>
+        <a class="btn btn-success btn-sm" href="/update/{{ post.id }}" role="button" >更新</a>
+        <a class="btn btn-danger btn-sm" href="/delete/{{ post.id }}" role="button" >削除</a>
+    </div>
+</div>
+{% endfor %}
+
+<br>
+<br>
+
+
+<p style="text-align: center" ><font size="7">1日の総得点</font></p>
+
+{% for point in points %}
+<div class="card w-50 mb-3" style="margin: auto;">
+    <div class=“card-body”>
+        <!-- <p>{{ point.due.date() }}</p> -->
+        <!-- <h2 class=“card-title”>ポイント{{ point.point }}</h2>  -->
+        <li class="list-group-item">{{ point.due.date() }}</li>
+        <li class="list-group-item">1日の総ポイント : {{ point.point }}</li>
+        <a class="btn btn-danger btn-sm" href="/delete_point/{{ point.id }}" role="button" >削除</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+<style type="text/css">
+    
+    footer{
+        position:relative;/*←絶対位置*/
+        bottom: 0; /*下に固定*/
+
+        background-color:#3C3A38;
+        /* color:#f5f4ef; */
+        width: 100%;
+        font-family: serif ;
+    }
+</style>
+
+<a class="btn-help" href="/" role="button">戻る</a>
+
+{% endblock %}
+ 
