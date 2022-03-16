@@ -92,7 +92,8 @@ def index():
         db.session.commit()
 
 
-        # todayの総ポイントに0を追加
+# todayの総ポイントに0を追加
+        # 日付取得
         today = datetime.today()
         today = today.replace(hour=0,minute=0,second=0,microsecond=0)
         yesterday1 = today + timedelta(days=-1)
@@ -108,8 +109,8 @@ def index():
             # point2 = Point.query.get(list.id)
             due_list.append(list.due)
 
-        # pointデータベースに追加
-# today
+ # pointデータベースに追加
+    # today
         if today not in due_list:
             # 今日のトータルポイントを計算
             today_list = session.query(Post.point).filter(Post.due==today).all()
@@ -133,7 +134,8 @@ def index():
         today_total = session1.query(Point).filter(Point.due==today).first()
         today_total.point = today_total_point
         session1.commit()
-# yeterday1
+        
+    # yeterday1
         if yesterday1 not in due_list:
             # 今日のトータルポイントを計算
             yesterday1_list = session.query(Post.point).filter(Post.due==yesterday1).all()
@@ -156,7 +158,7 @@ def index():
         yesterday1_total.point = yesterday1_total_point
         session1.commit()
 
-# yeterday2
+    # yeterday2
         if yesterday2 not in due_list:
             # 今日のトータルポイントを計算
             yesterday2_list = session.query(Post.point).filter(Post.due==yesterday2).all()
@@ -180,7 +182,7 @@ def index():
         session1.commit()
 
             
-# yeterday3
+    # yeterday3
         if yesterday3 not in due_list:
             # 今日のトータルポイントを計算
             yesterday3_list = session.query(Post.point).filter(Post.due==yesterday3).all()
@@ -203,7 +205,7 @@ def index():
         yesterday3_total.point = yesterday3_total_point
         session1.commit()
 
-# yeterday4
+    # yeterday4
         if yesterday4 not in due_list:
             # 今日のトータルポイントを計算
             yesterday4_list = session.query(Post.point).filter(Post.due==yesterday4).all()
@@ -226,7 +228,7 @@ def index():
         yesterday4_total.point = yesterday4_total_point
         session1.commit()
 
-# yeterday5
+    # yeterday5
         if yesterday5 not in due_list:
             # 今日のトータルポイントを計算
             yesterday5_list = session.query(Post.point).filter(Post.due==yesterday5).all()
@@ -249,7 +251,7 @@ def index():
         yesterday5_total.point = yesterday5_total_point
         session1.commit()
 
-# yeterday6
+    # yeterday6
         if yesterday6 not in due_list:
             # 今日のトータルポイントを計算
             yesterday6_list = session.query(Post.point).filter(Post.due==yesterday6).all()
@@ -272,7 +274,7 @@ def index():
         yesterday6_total.point = yesterday6_total_point
         session1.commit()
 
-# yeterday7
+    # yeterday7
         if yesterday7 not in due_list:
             # 今日のトータルポイントを計算
             yesterday7_list = session.query(Post.point).filter(Post.due==yesterday7).all()

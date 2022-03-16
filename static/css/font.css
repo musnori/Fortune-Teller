@@ -1,5 +1,4 @@
 .btn-square-raised {
-    font-size: 25px;
     font-family: 'Zen Kurenaido', sans-serif;
 }
 
@@ -13,21 +12,21 @@
 }
 
 .NowPoint {
-    font-size: 60px;
+    font-size: 9vh;
     font-family: 'Yusei Magic', sans-serif;
-    display: inline-block;
+    /* display: inline-block; */
     background: linear-gradient(transparent 80%, #ffff66 80%);
     
 }
 
 .NowPoint1 {
-    padding: 0.5em 1em;
-    margin: 2em 0;
+    padding: 0.5em 0.5em;
+    margin: 2% 2% 0 0;
     color: #00BCD4;
     background: #e4fcff;/*背景色*/
     border-top: solid 6px #1dc1d6;
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);/*影*/
-    font-size: 100px;
+    font-size: 10vh;
     font-family: 'Yusei Magic', sans-serif;
     /* background: linear-gradient(transparent 80%, #ffff66 80%); */
 }

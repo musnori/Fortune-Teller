@@ -40,23 +40,19 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
 
 <body>
 <div class="wrapper">
-    <h2 class="NowPoint" style="position:absolute; left:650px; top:150px"> 今日の運勢を予測！</h2>
+    <div style="text-align: center;">
+        <h2 class="NowPoint" style="margin-right: 25%; margin-left: 25%;"> 今日の運勢を予測！</h2>
+        <p class="wrapper-comment">一週間の運ポグラフを選んでみよう</p>
+    </div>
+    
 
-    <br>
-    <br>
-    <br>
-    <br>
 
-    <p class="wrapper-comment" style="position:absolute; left:750px; top:190px">一週間の運ポグラフを選んでみよう</p>
 
-    <br>
-    <br>
-    <br>
 
     <!-- <p class="wrapper-comment2">あなたの運勢は・・・</p> -->
 
     <form method="POST" enctype="multipart/form-data">
-        <input class="file_choose" type="file" name="file">
+        <input class="file_choose" style="font-size: 2vh;" type="file" name="file">
         <input class="btn btn-outline-dark" value="運勢予測!" type="submit">
     </form>
     <br>
@@ -70,9 +66,7 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
     <br>
     <div class="answer" style="text-align: center; position: relative; color:red; bottom:1px">{{answer2}}</div>
 
-    <br>
-    <br>
-    <br>
+  
 
     <div class="item-list">
         <div class="item">頑張った重み：{{ganbatta_w}}</div>
@@ -83,7 +77,7 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
 
 <style type="text/css">   
     .wrapper-comment{
-             font-size: 20px ;
+             font-size: 4vh ;
              font-family: 'Yusei Magic', sans-serif;
              display: inline-block;
         }
@@ -91,14 +85,14 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
 
 <style type="text/css">   
     .btn-outline-dark{
-             font-size: 30px ;line-height: 35px;
+             font-size: 5vh ;line-height: 35px;
              color: rgb(41, 23, 209);
         }
 </style>
 
 <style type="text/css">   
     .answer{
-             font-size: 40px ;line-height: 5px;
+             font-size: 7vh ;line-height: 5px;
              font-family: 'Kaisei Opti', serif;
         }
 </style>

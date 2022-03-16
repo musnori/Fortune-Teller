@@ -20,19 +20,19 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
 </style>
 
 
-<p style="text-align: center" ><font size="7">得点履歴</font></p>
+<p style="text-align: center; font-size: 7vh;" >得点履歴</p>
 {% for post in posts %}
 <div class="card w-50 mb-3" style="margin: auto;">
     <div class=“card-body”>
         <!-- <p>{{ post.due.date() }}</p> -->
         <!-- <h2 class=“card-title”>タイトル : {{ post.title }}</h2>
         <h2 class=“card-title”>ポイント : {{ post.point }}</h2> -->
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" style="font-size: 3vh;">
             <li class="list-group-item">{{ post.due.date() }}</li>
             <li class="list-group-item">カテゴリ : {{ post.object }}</li>
             <li class="list-group-item">タイトル : {{ post.title }}</li>
             <li class="list-group-item">ポイント : {{ post.point }}</li>
-          </ul>
+        </ul>
         <a class="btn btn-secondary btn-sm" href="/detail/{{ post.id }}" role="button" >詳細</a>
         <a class="btn btn-success btn-sm" href="/update/{{ post.id }}" role="button" >更新</a>
         <a class="btn btn-danger btn-sm" href="/delete/{{ post.id }}" role="button" >削除</a>
@@ -44,10 +44,10 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
 <br>
 
 
-<p style="text-align: center" ><font size="7">1日の総得点</font></p>
+<p style="text-align: center; font-size: 7vh;">1日の総得点</p>
 
 {% for point in points %}
-<div class="card w-50 mb-3" style="margin: auto;">
+<div class="card w-50 mb-3" style="margin: auto; font-size: 3vh;" >
     <div class=“card-body”>
         <!-- <p>{{ point.due.date() }}</p> -->
         <!-- <h2 class=“card-title”>ポイント{{ point.point }}</h2>  -->
