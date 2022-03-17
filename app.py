@@ -91,7 +91,8 @@ def index():
         db.session.commit()
 
 
-        # まとめて更新(未完成)
+# Pointデータベースの更新
+        # 今日の日付取得
         today = datetime.today()
         today = today.replace(hour=0,minute=0,second=0,microsecond=0)
         point_all = session1.query(Point).all()
@@ -100,8 +101,8 @@ def index():
             # point2 = Point.query.get(list.id)
             due_list.append(list.due)
 
-# dueの日付の合計ポイントを更新(Point)
-# 1週間以上前の日付でも1日の合計ポイントが更新される
+    # dueの日付の合計ポイントを更新(Point)
+    # 1週間以上前の日付でも1日の合計ポイントが更新される
         if due not in due_list:
                 day_list = session.query(Post.point).filter(Post.due==due).all()
                 day_total_point = 0
@@ -123,9 +124,9 @@ def index():
         day_total.point = day_total_point
         session1.commit()
         
-# 直近1週間の合計ポイントを更新(Point)
-# 運ポグラフ作成に必要な昨日までの1週間の合計ポイントを更新
-# これがないと入力してない日付がグラフに反映されない
+    # 直近1週間の合計ポイントを更新(Point)
+    # 運ポグラフ作成に必要な昨日までの1週間の合計ポイントを更新
+    # これがないと入力してない日付がグラフに反映されない
         for i in [0,1,2,3,4,5,6,7]:
             day = today + timedelta(days= -i)
             if day not in due_list:
@@ -149,7 +150,6 @@ def index():
             day_total = session1.query(Point).filter(Point.due==day).first()
             day_total.point = day_total_point
             session1.commit()
-
 
 
         return redirect('/')
