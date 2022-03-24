@@ -33,12 +33,27 @@
 
 
 
-<div class="NowPoint" style="position:absolute; left:725px; bottom:625px">現在の運ポイント</div>
-<div class="NowPoint1" style="position: absolute; left: 780px; bottom: 150px">{{ all_total_point }}P</div>
-
-
 <div class="area" id="Back">
-        <ul class="circles">
+        <div class="container">
+                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/pre_graph" role="button">運勢診断</a>
+                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/history" role="button">履歴</a>
+                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/helppre" role="button">HELP</a>
+                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/unpograph" role="button">運ポグラフ</a>
+        </div>
+        <div class="container" style="align-items: center;">
+        <div class="NowPoint" style="margin-left: 9%;margin-right: 9%;">現在の運ポイント</div>
+        <div class="NowPoint1"style="margin-left: 15%;margin-right: 15%;">{{ all_total_point }}P</div>
+        </div>
+
+        
+        <!-- 頑張った、良い事あったページに遷移 -->
+        <div class="container" style="justify-content: center;">
+                <a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto"  href="/create" role="button">頑張った</a>
+                <a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto" href="/create1" role="button">良い事あった</a>
+        </div>
+       
+
+        <!-- <ul class="circles">
                 <li></li>
                 <li></li>
                 <li></li>
@@ -49,29 +64,24 @@
                 <li></li>
                 <li></li>
                 <li></li>
-        </ul>
+        </ul> -->
 </div >
 
 <style type="text/css">
-        .btn-square-raised {
-                font-size: 40px;
+        .container{
+                display: flex;
         }
-       
+       .item{
+               margin: 10px;
+               padding: 10px;
+       }
 </style>
 
-<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/pre_graph" role="button" style="position: absolute; left: 10%; bottom: 70%">運勢診断</a>
-<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/history" role="button" style="position: absolute; left: 30%; bottom: 70%">履歴</a>
-<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/helppre" role="button" style="position: absolute; left: 50%; bottom: 70%">HELP</a>
-<a class="btn btn-info btn-lg m-5 btn-square-raised" href="/unpograph" role="button" style="position: absolute; left: 70%; bottom: 70%">運ポグラフ</a>
-<!-- 頑張った、良い事あったページに遷移 -->
 
-<a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto"  href="/create" role="button" style="position: absolute; left: 560px; bottom: 20px">頑張った</a>
-<a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto" href="/create1" role="button" style="position: absolute; left:960px; bottom: 20px">良い事あった</a>
-
-        
 
 
 <p class="NowPoint2" id="sampleArea" style="position: absolute; right: 2%; bottom: 89.5%">通常モード</p>
+
 <style type="text/css">
         .NowPoint2{
             color:#f5f4ef;

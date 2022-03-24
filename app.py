@@ -78,7 +78,6 @@ def index():
         detail = request.form.get('detail')
         due = request.form.get('due')
 
-         # point add
         point = request.form.get('point')
         object = request.form.get('object')
         effort = request.form.get('effort')
@@ -92,208 +91,66 @@ def index():
         db.session.commit()
 
 
-        # todayの総ポイントに0を追加
+# Pointデータベースの更新
+        # 今日の日付取得
         today = datetime.today()
         today = today.replace(hour=0,minute=0,second=0,microsecond=0)
-        yesterday1 = today + timedelta(days=-1)
-        yesterday2 = today + timedelta(days=-2) 
-        yesterday3 = today + timedelta(days=-3)
-        yesterday4 = today + timedelta(days=-4)
-        yesterday5 = today + timedelta(days=-5)
-        yesterday6 = today + timedelta(days=-6)
-        yesterday7 = today + timedelta(days=-7)
         point_all = session1.query(Point).all()
         due_list = []
         for list in point_all:
             # point2 = Point.query.get(list.id)
             due_list.append(list.due)
 
-        # pointデータベースに追加
-# today
-        if today not in due_list:
-            # 今日のトータルポイントを計算
-            today_list = session.query(Post.point).filter(Post.due==today).all()
-            today_total_point = 0
-            for list in today_list:
-                today_total_point = today_total_point + list.point
-            session1.add(Point(due=today, point=today_total_point))
+    # dueの日付の合計ポイントを更新(Point)
+    # 1週間以上前の日付でも1日の合計ポイントが更新される
+        if due not in due_list:
+                day_list = session.query(Post.point).filter(Post.due==due).all()
+                day_total_point = 0
+                for list in day_list:
+                    day_total_point = day_total_point + list.point
+                session1.add(Point(due=due,point=day_total_point))
+                session1.commit()
+        else:
+                # pointを更新
+                day_date = session1.query(Point).filter(Point.due==due).first()
+                day_date.point = 0
+                session1.commit()
+             #  今日のトータルポイントを計算
+        day_list = session.query(Post.point).filter(Post.due==due).all()
+        day_total_point = 0
+        for list in day_list:
+            day_total_point = day_total_point + list.point
+        day_total = session1.query(Point).filter(Point.due==due).first()
+        day_total.point = day_total_point
+        session1.commit()
+        
+    # 直近1週間の合計ポイントを更新(Point)
+    # 運ポグラフ作成に必要な昨日までの1週間の合計ポイントを更新
+    # これがないと入力してない日付がグラフに反映されない
+        for i in [0,1,2,3,4,5,6,7]:
+            day = today + timedelta(days= -i)
+            if day not in due_list:
+                day_list = session.query(Post.point).filter(Post.due==day).all()
+                day_total_point = 0
+                for list in day_list:
+                    day_total_point = day_total_point + list.point
+                session1.add(Point(due=day,point=day_total_point))
+                session1.commit()
+            else:
+                # pointを更新
+                day_date = session1.query(Point).filter(Point.due==day).first()
+                day_date.point = 0
+                session1.commit()
+        
+            #  今日のトータルポイントを計算
+            day_list = session.query(Post.point).filter(Post.due==day).all()
+            day_total_point = 0
+            for list in day_list:
+                day_total_point = day_total_point + list.point
+            day_total = session1.query(Point).filter(Point.due==day).first()
+            day_total.point = day_total_point
             session1.commit()
 
-        else:
-            # pointを更新
-            today_date = session1.query(Point).filter(Point.due==today).first()
-            today_date.point = 0
-            session1.commit()
-
-        # 今日のトータルポイントを計算
-        today_list = session.query(Post.point).filter(Post.due==today).all()
-        today_total_point = 0
-        for list in today_list:
-            today_total_point = today_total_point + list.point
-        today_total = session1.query(Point).filter(Point.due==today).first()
-        today_total.point = today_total_point
-        session1.commit()
-# yeterday1
-        if yesterday1 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday1_list = session.query(Post.point).filter(Post.due==yesterday1).all()
-            yesterday1_total_point = 0
-            for list in yesterday1_list:
-                yesterday1_total_point = yesterday1_total_point + list.point
-            session1.add(Point(due=yesterday1, point=yesterday1_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday1_date = session1.query(Point).filter(Point.due==yesterday1).first()
-            yesterday1_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday1_list = session.query(Post.point).filter(Post.due==yesterday1).all()
-        yesterday1_total_point = 0
-        for list in yesterday1_list:
-            yesterday1_total_point = yesterday1_total_point + list.point
-        yesterday1_total = session1.query(Point).filter(Point.due==yesterday1).first()
-        yesterday1_total.point = yesterday1_total_point
-        session1.commit()
-
-# yeterday2
-        if yesterday2 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday2_list = session.query(Post.point).filter(Post.due==yesterday2).all()
-            yesterday2_total_point = 0
-            for list in yesterday2_list:
-                yesterday2_total_point = yesterday2_total_point + list.point
-            session1.add(Point(due=yesterday2, point=yesterday2_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday2_date = session1.query(Point).filter(Point.due==yesterday2).first()
-            yesterday2_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday2_list = session.query(Post.point).filter(Post.due==yesterday2).all()
-        yesterday2_total_point = 0
-        for list in yesterday2_list:
-            yesterday2_total_point = yesterday2_total_point + list.point
-        yesterday2_total = session1.query(Point).filter(Point.due==yesterday2).first()
-        yesterday2_total.point = yesterday2_total_point
-        session1.commit()
-
-            
-# yeterday3
-        if yesterday3 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday3_list = session.query(Post.point).filter(Post.due==yesterday3).all()
-            yesterday3_total_point = 0
-            for list in yesterday3_list:
-                yesterday3_total_point = yesterday3_total_point + list.point
-            session1.add(Point(due=yesterday3, point=yesterday3_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday3_date = session1.query(Point).filter(Point.due==yesterday3).first()
-            yesterday3_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday3_list = session.query(Post.point).filter(Post.due==yesterday3).all()
-        yesterday3_total_point = 0
-        for list in yesterday3_list:
-            yesterday3_total_point = yesterday3_total_point + list.point
-        yesterday3_total = session1.query(Point).filter(Point.due==yesterday3).first()
-        yesterday3_total.point = yesterday3_total_point
-        session1.commit()
-
-# yeterday4
-        if yesterday4 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday4_list = session.query(Post.point).filter(Post.due==yesterday4).all()
-            yesterday4_total_point = 0
-            for list in yesterday4_list:
-                yesterday4_total_point = yesterday4_total_point + list.point
-            session1.add(Point(due=yesterday4, point=yesterday4_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday4_date = session1.query(Point).filter(Point.due==yesterday4).first()
-            yesterday4_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday4_list = session.query(Post.point).filter(Post.due==yesterday4).all()
-        yesterday4_total_point = 0
-        for list in yesterday4_list:
-            yesterday4_total_point = yesterday4_total_point + list.point
-        yesterday4_total = session1.query(Point).filter(Point.due==yesterday4).first()
-        yesterday4_total.point = yesterday4_total_point
-        session1.commit()
-
-# yeterday5
-        if yesterday5 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday5_list = session.query(Post.point).filter(Post.due==yesterday5).all()
-            yesterday5_total_point = 0
-            for list in yesterday5_list:
-                yesterday5_total_point = yesterday5_total_point + list.point
-            session1.add(Point(due=yesterday5, point=yesterday5_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday5_date = session1.query(Point).filter(Point.due==yesterday5).first()
-            yesterday5_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday5_list = session.query(Post.point).filter(Post.due==yesterday5).all()
-        yesterday5_total_point = 0
-        for list in yesterday5_list:
-            yesterday5_total_point = yesterday5_total_point + list.point
-        yesterday5_total = session1.query(Point).filter(Point.due==yesterday5).first()
-        yesterday5_total.point = yesterday5_total_point
-        session1.commit()
-
-# yeterday6
-        if yesterday6 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday6_list = session.query(Post.point).filter(Post.due==yesterday6).all()
-            yesterday6_total_point = 0
-            for list in yesterday6_list:
-                yesterday6_total_point = yesterday6_total_point + list.point
-            session1.add(Point(due=yesterday6, point=yesterday6_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday6_date = session1.query(Point).filter(Point.due==yesterday6).first()
-            yesterday6_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday6_list = session.query(Post.point).filter(Post.due==yesterday6).all()
-        yesterday6_total_point = 0
-        for list in yesterday6_list:
-            yesterday6_total_point = yesterday6_total_point + list.point
-        yesterday6_total = session1.query(Point).filter(Point.due==yesterday6).first()
-        yesterday6_total.point = yesterday6_total_point
-        session1.commit()
-
-# yeterday7
-        if yesterday7 not in due_list:
-            # 今日のトータルポイントを計算
-            yesterday7_list = session.query(Post.point).filter(Post.due==yesterday7).all()
-            yesterday7_total_point = 0
-            for list in yesterday7_list:
-                yesterday7_total_point = yesterday7_total_point + list.point
-            session1.add(Point(due=yesterday7, point=yesterday7_total_point))
-            session1.commit()
-        else:
-            # pointを更新
-            yesterday7_date = session1.query(Point).filter(Point.due==yesterday7).first()
-            yesterday7_date.point = 0
-            session1.commit()
-        # 今日のトータルポイントを計算
-        yesterday7_list = session.query(Post.point).filter(Post.due==yesterday7).all()
-        yesterday7_total_point = 0
-        for list in yesterday7_list:
-            yesterday7_total_point = yesterday7_total_point + list.point
-        yesterday7_total = session1.query(Point).filter(Point.due==yesterday7).first()
-        yesterday7_total.point = yesterday7_total_point
-        session1.commit()
 
         return redirect('/')
 
@@ -321,8 +178,8 @@ def helppre():
 @app.route('/history', methods =['GET', 'POST'])
 def history():
 
-    posts = Post.query.all()
-    points = session1.query(Point).all()
+    posts = Post.query.order_by(Post.due).all()
+    points = session1.query(Point).order_by(Point.due).all()
     
     return render_template('history.html', posts=posts, points=points)
 

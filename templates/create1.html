@@ -67,11 +67,11 @@ height:12%; position:absolute; left:82%;  bottom:88%;" >
         <input type="date" id="regist_date" name="due" required>
     </div>
     <!-- point add -->
-    <div  hidden class="mb-3 pb-3">
+    <div class="mb-3 pb-3">
         <label for="point">Point</label>
         <input type="number" id="dispvalue" value="-1" class="form-control" name="point">
-        <input type="button" value="良い事あった" onclick="document.getElementById('dispvalue').value = 1 + parseInt(document.getElementById('dispvalue').value);"  />
-        <!-- <input type="button" value="良い事あった" onclick="document.getElementById('dispvalue').value = parseInt(document.getElementById('dispvalue').value) - 1;"  /> -->
+        <input type="button" value="良い事あった" onclick="document.getElementById('dispvalue').value = parseInt(document.getElementById('dispvalue').value) - 1;"  />
+        <input type="button" value="リセット" onclick="document.getElementById('dispvalue').value = 1 + parseInt(document.getElementById('dispvalue').value);"  />
     </div>
     <!-- effort add -->
     <div  hidden class="mb-3 pb-3">
