@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Help - Fortune Teller</title>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="floating-shapes">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="app-container">
+        <div class="fade-in">
+            <!-- Header -->
+            <header class="text-center mb-xl">
+                <div class="help-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <h1 class="page-title">Help</h1>
+                <p class="page-subtitle">How to use Fortune Teller</p>
+            </header>
+
+            <!-- Help Sections -->
+            <div class="help-sections slide-up">
+                <!-- What is Fortune Teller -->
+                <div class="glass-card help-card">
+                    <h3 class="help-title">What is Fortune Teller?</h3>
+                    <p class="help-text">
+                        Fortune Teller is an app that tracks your daily efforts and good things that happen to you.
+                        By recording your efforts, you accumulate "Luck Points" which can influence your fortune!
+                    </p>
+                </div>
+
+                <!-- How Points Work -->
+                <div class="glass-card help-card">
+                    <h3 class="help-title">How do Points Work?</h3>
+                    <div class="point-explanation">
+                        <div class="point-item positive">
+                            <span class="point-emoji">*</span>
+                            <div>
+                                <strong>Effort (+Points)</strong>
+                                <p>When you work hard or achieve something, you earn points. These add up to improve your luck!</p>
+                            </div>
+                        </div>
+                        <div class="point-item negative">
+                            <span class="point-emoji">*</span>
+                            <div>
+                                <strong>Good Things (-1 Point)</strong>
+                                <p>When something good happens, it means you "used up" some luck. Don't worry - keep working hard!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="glass-card help-card">
+                    <h3 class="help-title">Features</h3>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>Home:</strong> View your total points and access main functions
+                        </li>
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>Record Effort:</strong> Log your hard work and earn points
+                        </li>
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>Good Things:</strong> Record lucky moments (uses 1 point)
+                        </li>
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>Fortune:</strong> Check your luck based on your points
+                        </li>
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>Graph:</strong> See your 7-day point trend
+                        </li>
+                        <li>
+                            <span class="feature-icon">*</span>
+                            <strong>History:</strong> Review all your records
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Data Storage -->
+                <div class="glass-card help-card">
+                    <h3 class="help-title">Data Storage</h3>
+                    <p class="help-text">
+                        All your data is stored locally in your browser. This means:
+                    </p>
+                    <ul class="storage-list">
+                        <li>Your data is private and stays on your device</li>
+                        <li>No account or login required</li>
+                        <li>Data persists even after closing the browser</li>
+                        <li>Clearing browser data will reset the app</li>
+                    </ul>
+                </div>
+
+                <!-- Tips -->
+                <div class="glass-card help-card">
+                    <h3 class="help-title">Tips for Success</h3>
+                    <ul class="tips-list">
+                        <li>Record your efforts daily for the best results</li>
+                        <li>Be honest about your achievements</li>
+                        <li>Check your fortune each morning for motivation</li>
+                        <li>Review the graph weekly to see your progress</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="btn-group mt-xl">
+                <a href="index.html" class="btn btn-primary btn-lg btn-block">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="fortune.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4M12 8h.01"/>
+            </svg>
+            <span>Fortune</span>
+        </a>
+        <a href="create.html" class="nav-item nav-add">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+        </a>
+        <a href="graph.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span>Graph</span>
+        </a>
+        <a href="history.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>History</span>
+        </a>
+    </nav>
+
+    <style>
+        .help-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-md);
+            border-radius: 50%;
+            background: var(--gradient-cool);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(168, 237, 234, 0.4);
+        }
+
+        .help-icon svg {
+            width: 48px;
+            height: 48px;
+            color: var(--gray-800);
+        }
+
+        .help-sections {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .help-card {
+            padding: var(--space-xl);
+        }
+
+        .help-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            color: var(--white);
+        }
+
+        .help-text {
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .point-explanation {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .point-item {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .point-emoji {
+            font-size: 2rem;
+        }
+
+        .point-item p {
+            font-size: var(--font-size-sm);
+            opacity: 0.8;
+            margin-top: var(--space-xs);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            font-size: 1.2rem;
+        }
+
+        .storage-list, .tips-list {
+            list-style: none;
+            padding: 0;
+            margin-top: var(--space-md);
+        }
+
+        .storage-list li, .tips-list li {
+            padding: var(--space-sm) 0;
+            opacity: 0.9;
+            font-size: var(--font-size-sm);
+        }
+
+        .storage-list li::before {
+            content: "- ";
+            color: var(--accent-light);
+        }
+
+        .tips-list li::before {
+            content: "* ";
+        }
+    </style>
+</body>
+</html>
