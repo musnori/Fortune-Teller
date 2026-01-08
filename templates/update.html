@@ -1,20 +1,76 @@
 {% extends 'base.html' %}
 
+{% block title %}編集 - Fortune Teller{% endblock %}
+
 {% block body %}
-<form class="m-5" action="/update/{{ post.id }}" method="POST">
-    <div class="mb-3 pb-3">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" name="title" value="{{ post.title }}">
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">記録を編集</h1>
+    </header>
+
+    <!-- Form Card -->
+    <div class="glass-card slide-up">
+        <form action="/update/{{ post.id }}" method="POST">
+            <!-- Title -->
+            <div class="form-group">
+                <label class="form-label">タイトル</label>
+                <input type="text" class="form-input" name="title" value="{{ post.title }}" required>
+            </div>
+
+            <!-- Detail -->
+            <div class="form-group">
+                <label class="form-label">メモ</label>
+                <textarea class="form-textarea" name="detail">{{ post.detail }}</textarea>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+                <label class="form-label">日付</label>
+                <input type="date" class="form-input" name="due" value="{{ post.due.strftime('%Y-%m-%d') }}" required>
+            </div>
+
+            <!-- Current Point (Display Only) -->
+            <div class="form-group">
+                <label class="form-label">現在のポイント</label>
+                <div class="point-display-inline">
+                    <span class="{% if post.point > 0 %}positive{% else %}negative{% endif %}">
+                        {% if post.point > 0 %}+{% endif %}{{ post.point }}P
+                    </span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="btn-group">
+                <a href="/" class="btn btn-secondary">キャンセル</a>
+                <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    保存する
+                </button>
+            </div>
+        </form>
     </div>
-    <div class="mb-3 pb-3">
-        <label for="detail">Detail</label>
-        <input type="text" class="form-control" name="detail" value="{{ post.detail }}">
-    </div>
-    <div class="mb-3 pb-3">
-        <label for="due">Due</label>
-        <input type="date" name="due" value="{{ post.due.date() }}" required>
-    </div>
-    <a class="btn btn-outline-primary" href="/" role="button">Return</a>
-    <button type="submit" class="btn btn-primary">Change</button>
-</form>
+</div>
+
+<style>
+    .point-display-inline {
+        padding: var(--space-md) var(--space-lg);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+    }
+
+    .point-display-inline .positive {
+        color: var(--accent-light);
+    }
+
+    .point-display-inline .negative {
+        color: var(--secondary-light);
+    }
+</style>
 {% endblock %}

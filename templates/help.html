@@ -1,124 +1,129 @@
 {% extends 'base.html' %}
 
-{% block head %}
-<meta charset="utf-8">
-<title>8-8 ランダムに出現</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
- <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
-<!-- <link rel="stylesheet" type="text/css" href="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/8-8/css/reset.css"> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css"> -->
-<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/otameshi.css') }}"> -->
-
-
-{% endblock %}
-
-
-
-
-{% block headline %}
-<h2 class="headline" style="text-align: center; position:absolute;">君なら大丈夫</h2>
-<h2 class="headline" style="text-align: center; position: relative;">Help !</h2>
-
-<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
-height:12%; position:absolute; left:82%;  bottom:88%;" >
-
-<audio src="static/BGM/tiny_dream.mp3"  autoplay></audio>
-
-<style type="text/css">
-.headline{
-    background-color:#3C3A38;
-    color:#f5f4ef;
-    padding : 1.4em;
-    font-family: serif ;
-}
-</style>
-
-{% endblock %}
-
-
+{% block title %}ヘルプ - Fortune Teller{% endblock %}
 
 {% block body %}
+<div class="fade-in help-page">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">君なら大丈夫！</h1>
+        <p class="page-subtitle">過去の頑張りを振り返ろう</p>
+    </header>
 
+    <!-- Floating Titles Container -->
+    <div class="floating-titles" id="floatingTitles">
+        {% for t in title %}
+        <div class="floating-title" style="animation-delay: {{ loop.index * 0.5 }}s;">
+            {{ t }}
+        </div>
+        {% endfor %}
+    </div>
 
-<!-- <style>
-    body{
-        background: radial-gradient(#F2B9A1, #EA6264);
+    <!-- Bottom Navigation -->
+    <div class="help-footer">
+        <a href="/helppre" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            戻る
+        </a>
+        <a href="/" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            ホーム
+        </a>
+    </div>
+</div>
+
+<!-- Background Music (optional - uncomment if desired) -->
+<!-- <audio src="{{ url_for('static', filename='BGM/tiny_dream.mp3') }}" autoplay loop></audio> -->
+
+<style>
+    .help-page {
+        min-height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
     }
-    </style> -->
 
-
-
-<style type="text/css">
-
-
-    .mojiume{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* background-color:#1995ee; */
-    position:absolute;
-    width:500px;
-    height:500px;
-    overflow: visible;
-    font-size: 40px;
-    font-family: serif ;
-    /* writing-mode:vertical-lr ; */
-    color : rgb(0, 0, 0);
+    .floating-titles {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        min-height: 400px;
     }
-    </style>
-    
-    <!-- 文字の動きjavascript -->
-    <script type="text/javascript">
 
-    /* 文字埋め */
-    var mojiume = new Object();
-
-    mojiume.list = {{ title | tojson}};
-
-    mojiume.count = 0;
-    mojiume.limit = 1000;
-
-    mojiume.set = function(){
-    var span = document.createElement("span");
-    span.className = "mojiume";
-    span.style.left = ( Math.random()*70 )+"%";
-    span.style.top =( Math.random()*40 )+"%";
-    // span.style.transform =
-    // "rotate("+( ( Math.random()*120 )-60 )+"deg)";
-
-     // 文字リストからランダムに表示する場合は
-     mojiume.count = document.querySelectorAll(".mojiume").length;
-    span.textContent =
-    mojiume.list[mojiume.count];
-    document.body.appendChild( span );
-    if( document.querySelectorAll(".mojiume").length>=mojiume.limit ){
-    clearInterval( mojiume.tmr );
+    .floating-title {
+        position: absolute;
+        padding: var(--space-md) var(--space-lg);
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        font-size: var(--font-size-lg);
+        font-weight: 500;
+        white-space: nowrap;
+        animation: floatAround 20s ease-in-out infinite;
+        opacity: 0;
     }
-    };
-    mojiume.tmr = setInterval( mojiume.set, 2000 );
-    </script>
-    
 
+    .floating-title:nth-child(1) { left: 10%; top: 10%; animation-delay: 0s; }
+    .floating-title:nth-child(2) { left: 60%; top: 20%; animation-delay: 0.5s; }
+    .floating-title:nth-child(3) { left: 30%; top: 40%; animation-delay: 1s; }
+    .floating-title:nth-child(4) { left: 70%; top: 60%; animation-delay: 1.5s; }
+    .floating-title:nth-child(5) { left: 20%; top: 70%; animation-delay: 2s; }
+    .floating-title:nth-child(6) { left: 50%; top: 30%; animation-delay: 2.5s; }
+    .floating-title:nth-child(7) { left: 5%; top: 50%; animation-delay: 3s; }
+    .floating-title:nth-child(8) { left: 75%; top: 45%; animation-delay: 3.5s; }
+    .floating-title:nth-child(9) { left: 40%; top: 75%; animation-delay: 4s; }
+    .floating-title:nth-child(10) { left: 15%; top: 30%; animation-delay: 4.5s; }
 
-{% endblock %}
+    @keyframes floatAround {
+        0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+        }
+        10% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        90% {
+            opacity: 1;
+            transform: translateY(-10px) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-30px) scale(0.9);
+        }
+    }
 
+    .help-footer {
+        display: flex;
+        gap: var(--space-md);
+        justify-content: center;
+        padding: var(--space-xl) 0;
+    }
 
-{% block footer %}
+    /* Hide bottom nav on this page */
+    .bottom-nav {
+        display: none;
+    }
 
-<style type="text/css">
-    
-    footer{
-        position: absolute;/*←絶対位置*/
-        bottom: 0; /*下に固定*/
-
-        background-color:#3C3A38;
-        /* color:#f5f4ef; */
-        width: 100%;
-        font-family: serif ;
+    .app-container {
+        padding-bottom: var(--space-xl);
     }
 </style>
 
-<a class="btn-help" href="/helppre" role="button">戻る</a>
-
-
+<script>
+    // Dynamically position titles
+    const titles = document.querySelectorAll('.floating-title');
+    titles.forEach((title, index) => {
+        title.style.left = Math.random() * 70 + '%';
+        title.style.top = (index * 10 + Math.random() * 20) + '%';
+        title.style.animationDelay = (index * 0.8) + 's';
+        title.style.animationDuration = (15 + Math.random() * 10) + 's';
+    });
+</script>
 {% endblock %}

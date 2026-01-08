@@ -1,188 +1,236 @@
 {% extends 'base.html' %}
-<html lang="ja" dir="ltr"></html>
 
-{% block header %}
-<meta charset="utf-8">
-<title>グラフ</title> 
-{% endblock %}
+{% block title %}運ポグラフ - Fortune Teller{% endblock %}
 
-{% block headline %}
-<h2 class="headline" style="text-align: center; position: relative;">一週間の運ポグラフ</h2>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
-<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
-height:12%; position:absolute; left:82%;  bottom:88%;" >
-
-
-<style type="text/css">
-.headline{
-    background-color:#3C3A38;
-    color:#f5f4ef;
-    padding : 1.4em;
-    font-family: serif ;
-}
-</style>
-
-{% endblock %}
-
-
+{% block nav_graph %}active{% endblock %}
 
 {% block body %}
-<h1>運ポグラフ</h1>
-<label for="due">日付</label>
-<input type="date" id="Regist_Date" name="date" required>
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">運ポグラフ</h1>
+        <p class="page-subtitle">7日間のポイント推移</p>
+    </header>
 
-<a class="btn btn-secondary" href="/" role="button">Return</a>
+    <!-- Graph Card -->
+    <div class="glass-card slide-up">
+        <div class="graph-header">
+            <span class="graph-period">直近7日間</span>
+            <button onclick="downloadImg()" class="btn btn-sm btn-outline" id="downloadBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                保存
+            </button>
+        </div>
 
-<!-- 画像保存 -->
-<a onclick="downloadImg()" id="download" class="btn btn-primary">画像ダウンロード</a>
+        <!-- Chart Container -->
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
 
-<!-- グラフ描画エリア -->
-<canvas id="myChart"></canvas>
+        <!-- Summary Stats -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">合計</span>
+                <span class="stat-value" id="totalPoints">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">平均</span>
+                <span class="stat-value" id="avgPoints">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">最高</span>
+                <span class="stat-value" id="maxPoints">--</span>
+            </div>
+        </div>
+    </div>
 
-<!-- 画像保存に関係 -->
-<img id="myChart_img" src="" />
-<br />
-<a id="myChart_imglink" href=""></a>
+    <!-- Action Buttons -->
+    <div class="btn-group mt-xl">
+        <a href="/create" class="btn btn-primary btn-lg" style="flex: 1;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            記録を追加
+        </a>
+        <a href="/pre_graph" class="btn btn-secondary btn-lg" style="flex: 1;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2v10l7 4"/>
+            </svg>
+            運勢診断
+        </a>
+    </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q==" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" />
-
-<script>
-  var ctx = document.getElementById("myChart");
-  var labels1 = new Object();
-  var data1 = new Object();
-
-  labels1.list = {{ day | tojson }};
-  data1.list = {{ point | tojson}};
-  
-  var myChart = new Chart(ctx, {
-    //線グラフ
-    type: "line",
-    //データ
-    data: {
-      //各データの時間
-      labels : labels1.list,
-      //データセット
-      datasets: [
-        {
-          label: "運ポイント",
-          lineTension: 0,
-          data : data1.list,
-          borderColor: "rgba(0, 0, 255, 1)", //線の色
-          backgroundColor: "rgba(0, 0, 0, 0)" //塗りつぶしの色
-        }
-      ]
-    },
-    //グラフ設定
-    options: {
-      //凡例は非表示
-      legend: {
-        display: false
-      },
-      scales: {
-        //X軸
-        xAxes: [
-          {
-            gridLines: {
-              drawOnChartArea: false,
-              color: "#000000"
-          },
-
-            //軸ラベル表示
-            scaleLabel: {
-              display: true,
-              labelString: "日付",
-              fontColor: "#000000",
-              fontSize: 30
-            },
-            //ここで軸を時間を設定する
-            type: "time",
-            time: {
-              // parser: "hh:mm",
-              unit: "day",
-            },
-            //X軸の範囲を指定
-            ticks: {
-              fontColor: "#000000",
-              fontSize: 20
-            }
-          }
-        ],
-        //Y軸
-        yAxes: [
-          {
-            gridLines: {
-              drawOnChartArea: false,
-              color: "#000000"
-          },
-            //軸ラベル表示
-            scaleLabel: {
-              display: true,
-              labelString: "運ポ",
-              fontColor: "#000000",
-              fontSize: 30
-            },
-            //Y軸の範囲を指定
-            ticks: {
-              min: 0,
-              max: 6,
-              fontColor: "#000000",
-              fontSize: 20
-            }
-          }
-        ]
-      }
+<style>
+    .graph-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-lg);
     }
-  });
 
-  // 画像化
-  var image = myChart.toBase64Image();
-  document.getElementById('myChart_img').setAttribute('src', image);
-  document.getElementById('myChart_imglink').setAttribute('href', image);
+    .graph-period {
+        font-size: var(--font-size-sm);
+        opacity: 0.7;
+    }
 
+    .chart-container {
+        position: relative;
+        height: 250px;
+        margin-bottom: var(--space-xl);
+    }
 
-  var canvas = document.getElementById('myChart');
-  function downloadImg(){
-    let link = document.getElementById("download");
-    link.href= canvas.toDataURL('image/png');
-    link.download = 'img.jpg';
-}
-  
-  var date = new Date();
-  
-  // 「年月日」を配列で取得 ( [0]:年, [1]:月, [2]:日 )
-  var dateArray = getTSDate(date);
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-md);
+        padding-top: var(--space-lg);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-  // 登録日付に「本日の年月日」を設定
-  document.getElementById("Regist_Date").value = dateArray[0] + "-" + dateArray[1] + "-" + dateArray[2]
+    .stat-item {
+        text-align: center;
+    }
 
+    .stat-label {
+        display: block;
+        font-size: var(--font-size-xs);
+        opacity: 0.6;
+        margin-bottom: var(--space-xs);
+    }
 
-  /**
-   *  タイムスタンプから年月日文字列を取得
-   */       
-  function getTSDate(date){
-      var dateArray = new Array();
-      dateArray.push(zero_pad(date.getFullYear(),4));
-      dateArray.push(zero_pad(date.getMonth() + 1,2));
-      dateArray.push(zero_pad(date.getDate(),2));
-      return dateArray;
-  }
-  
-  /**
-   *  ０詰処理
-   */
-  function zero_pad(val, show_length){
-      var str_val = String(val);
-      if( str_val.length < show_length ){
-          var zero = ""; 
-          for(var i = 0; i < ( show_length - str_val.length ); i++){
-              zero += "0";
-          }
-          str_val = zero + str_val;
-      }
-      return str_val;
-  };
+    .stat-value {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+    }
 
+    .stat-value.positive {
+        color: var(--accent-light);
+    }
+
+    .stat-value.negative {
+        color: var(--secondary-light);
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+    // Data from Flask
+    const labels = {{ day | tojson }};
+    const data = {{ point | tojson }};
+
+    // Calculate stats
+    const total = data.reduce((a, b) => a + b, 0);
+    const avg = data.length ? (total / data.length).toFixed(1) : 0;
+    const max = data.length ? Math.max(...data) : 0;
+
+    document.getElementById('totalPoints').textContent = total + 'P';
+    document.getElementById('avgPoints').textContent = avg + 'P';
+    document.getElementById('maxPoints').textContent = max + 'P';
+
+    // Apply colors based on values
+    if (total >= 0) document.getElementById('totalPoints').classList.add('positive');
+    else document.getElementById('totalPoints').classList.add('negative');
+
+    // Chart.js config
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Create gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+    gradient.addColorStop(0, 'rgba(129, 140, 248, 0.5)');
+    gradient.addColorStop(1, 'rgba(129, 140, 248, 0)');
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.reverse(),
+            datasets: [{
+                label: '運ポイント',
+                data: data.reverse(),
+                borderColor: '#818cf8',
+                backgroundColor: gradient,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#818cf8',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 30, 40, 0.9)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + 'P';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: {
+                            size: 11
+                        },
+                        callback: function(value) {
+                            return value + 'P';
+                        }
+                    },
+                    beginAtZero: true
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+
+    // Download function
+    function downloadImg() {
+        const canvas = document.getElementById('myChart');
+        const link = document.createElement('a');
+        link.download = 'fortune-graph.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
 </script>
- 
 {% endblock %}

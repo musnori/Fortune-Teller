@@ -1,135 +1,280 @@
 {% extends 'base.html' %}
 
-{% block headline %}
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@700&display=swap" rel="stylesheet">
-<h2 class="headline" style="text-align: center; position: relative;">AIによる運勢診断</h2>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
-<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
-height:12%; position:absolute; left:82%;  bottom:88%;" >
+{% block title %}運勢診断 - Fortune Teller{% endblock %}
 
-
-<style type="text/css">
-.headline{
-    background-color:#3C3A38;
-    color:#f5f4ef;
-    padding : 1.4em;
-    font-family: serif ;
-}
-</style>
-
-{% endblock %}
+{% block nav_fortune %}active{% endblock %}
 
 {% block body %}
-<!DOCTYPE html>
-<html lang="ja">
-<!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="img/x-icon" href="../static/favicon.jpeg">   
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
-</head> -->
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <div class="fortune-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a10 10 0 0 1 0 20"/>
+                <path d="M12 2v10l7 4"/>
+            </svg>
+        </div>
+        <h1 class="page-title">運勢診断</h1>
+        <p class="page-subtitle">AIが今日の運勢を予測します</p>
+    </header>
 
-<body>
-<div class="wrapper">
-    <div style="text-align: center;">
-        <h2 class="NowPoint" style="margin-right: 25%; margin-left: 25%;"> 今日の運勢を予測！</h2>
-        <p class="wrapper-comment">一週間の運ポグラフを選んでみよう</p>
+    {% if answer %}
+    <!-- Fortune Result -->
+    <div class="glass-card fortune-result slide-up">
+        <div class="result-header">
+            <span class="result-label">今日の運勢</span>
+        </div>
+        <div class="fortune-rank">{{ answer }}</div>
+        <div class="fortune-message">{{ answer2 }}</div>
+
+        <div class="fortune-weights">
+            <div class="fortune-weight">
+                <div class="fortune-weight-icon">⭐</div>
+                <div class="fortune-weight-label">頑張りの重み</div>
+                <div class="fortune-weight-value">×{{ ganbatta_w }}</div>
+            </div>
+            <div class="fortune-weight">
+                <div class="fortune-weight-icon">💫</div>
+                <div class="fortune-weight-label">良いことの重み</div>
+                <div class="fortune-weight-value">×{{ yokattakoto_w }}</div>
+            </div>
+        </div>
+
+        <div class="btn-group mt-xl">
+            <a href="/create" class="btn btn-primary btn-lg btn-block">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                頑張りを記録する
+            </a>
+        </div>
     </div>
-    
+    {% else %}
+    <!-- Upload Form -->
+    <div class="glass-card slide-up">
+        <form method="POST" enctype="multipart/form-data" id="fortuneForm">
+            <div class="upload-wrapper">
+                <label class="upload-area" for="fileInput">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <span class="upload-area-text" id="uploadText">画像をアップロード</span>
+                    <span class="upload-area-hint">運ポグラフや直感で選んだ画像でOK</span>
+                </label>
+                <input type="file" id="fileInput" name="file" accept="image/*" hidden>
+            </div>
 
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-xl" id="submitBtn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 2a10 10 0 0 1 0 20"/>
+                    <path d="M12 2v10l7 4"/>
+                </svg>
+                運勢を診断する
+            </button>
+        </form>
 
-
-
-    <!-- <p class="wrapper-comment2">あなたの運勢は・・・</p> -->
-
-    <form method="POST" enctype="multipart/form-data">
-        <input class="file_choose" style="font-size: 2vh;" type="file" name="file">
-        <input class="btn btn-outline-dark" value="運勢予測!" type="submit">
-    </form>
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <div class="answer" style="text-align: center; position: relative; color:red; bottom:10px">{{answer}}</div>
-    <br>
-    <br>
-    <br>
-    <div class="answer" style="text-align: center; position: relative; color:red; bottom:1px">{{answer2}}</div>
-
-  
-
-    <div class="item-list">
-        <div class="item">頑張った重み：{{ganbatta_w}}</div>
-        <div class="item">良かったことの重み：{{yokattakoto_w}}</div>
+        <div class="fortune-tips mt-xl">
+            <h3 class="section-title">診断のコツ</h3>
+            <ul class="tips-list">
+                <li>📊 運ポグラフのスクショがおすすめ</li>
+                <li>🎨 直感で気になる画像を選んでもOK</li>
+                <li>🌅 毎朝の習慣にすると楽しいかも</li>
+            </ul>
+        </div>
     </div>
-
+    {% endif %}
 </div>
 
-<style type="text/css">   
-    .wrapper-comment{
-             font-size: 4vh ;
-             font-family: 'Yusei Magic', sans-serif;
-             display: inline-block;
-        }
+<style>
+    .fortune-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto var(--space-md);
+        border-radius: 50%;
+        background: var(--gradient-warm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 40px rgba(250, 112, 154, 0.4);
+    }
+
+    .fortune-icon svg {
+        width: 56px;
+        height: 56px;
+    }
+
+    .upload-wrapper {
+        margin-bottom: var(--space-md);
+    }
+
+    .upload-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-2xl);
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+
+    .upload-area:hover {
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .upload-area.has-file {
+        border-color: var(--accent);
+        background: rgba(16, 185, 129, 0.1);
+    }
+
+    .upload-area svg {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--space-md);
+        opacity: 0.7;
+    }
+
+    .upload-area-text {
+        font-size: var(--font-size-lg);
+        font-weight: 500;
+        margin-bottom: var(--space-xs);
+    }
+
+    .upload-area-hint {
+        font-size: var(--font-size-sm);
+        opacity: 0.6;
+    }
+
+    .fortune-tips {
+        padding-top: var(--space-xl);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tips-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .tips-list li {
+        padding: var(--space-sm) 0;
+        opacity: 0.8;
+        font-size: var(--font-size-sm);
+    }
+
+    /* Result Styles */
+    .result-header {
+        text-align: center;
+        margin-bottom: var(--space-lg);
+    }
+
+    .result-label {
+        display: inline-block;
+        padding: var(--space-xs) var(--space-md);
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+    }
+
+    .fortune-rank {
+        font-size: var(--font-size-2xl);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: var(--space-md);
+        background: var(--gradient-warm);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .fortune-message {
+        font-size: var(--font-size-xl);
+        text-align: center;
+        opacity: 0.9;
+        margin-bottom: var(--space-xl);
+        padding: var(--space-lg);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-md);
+    }
+
+    .fortune-weights {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+
+    .fortune-weight {
+        text-align: center;
+        padding: var(--space-lg);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-md);
+    }
+
+    .fortune-weight-icon {
+        font-size: 2rem;
+        margin-bottom: var(--space-sm);
+    }
+
+    .fortune-weight-label {
+        font-size: var(--font-size-sm);
+        opacity: 0.7;
+        margin-bottom: var(--space-xs);
+    }
+
+    .fortune-weight-value {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+        color: var(--accent-light);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 </style>
 
-<style type="text/css">   
-    .btn-outline-dark{
-             font-size: 5vh ;line-height: 35px;
-             color: rgb(41, 23, 209);
-        }
-</style>
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.querySelector('.upload-area');
+    const uploadText = document.getElementById('uploadText');
+    const submitBtn = document.getElementById('submitBtn');
 
-<style type="text/css">   
-    .answer{
-             font-size: 7vh ;line-height: 5px;
-             font-family: 'Kaisei Opti', serif;
-        }
-</style>
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                uploadArea.classList.add('has-file');
+                uploadText.textContent = this.files[0].name;
+                submitBtn.disabled = false;
+            }
+        });
 
-<style type="text/css"> 
-.item-list{
-    display: flex;
-    justify-content: center; /* 中央寄せ */
-  }
-</style>
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+        });
 
-<style type="text/css">
- .item-list .item{
-    box-sizing: border-box;
-    padding: 40px 80px;  
-  }
-</style>
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '';
+        });
 
-{% endblock %}    
-
-{% block footer %}
-
-<style type="text/css">
-    
-    footer{
-        position: absolute;/*←絶対位置*/
-        bottom: 0; /*下に固定*/
-    
-        background-color:#3C3A38;
-            /* color:#f5f4ef; */
-        width: 100%;
-        height: 40px;
-        font-family: serif ;
-        }
-</style>
-    
-<a class="btn-help" href="/" role="button">戻る</a>
-</body>
-</html>
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '';
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                uploadArea.classList.add('has-file');
+                uploadText.textContent = files[0].name;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+</script>
 {% endblock %}
