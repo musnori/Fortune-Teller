@@ -1,118 +1,93 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/TopGamen.css') }}">
-<link rel="preconnect" href="https://fonts.googleapis.com"> 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-<title>運ポ</title>
-{% endblock %}
+{% block title %}Fortune Teller - ホーム{% endblock %}
+
+{% block nav_home %}active{% endblock %}
 
 {% block body %}
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">Fortune Teller</h1>
+        <p class="page-subtitle">毎日の頑張りを記録しよう</p>
+    </header>
 
-<!-- header -->
-<!-- <header>
-<h1 class="headline"><a>運ポ</a></h1>
-</header> -->
+    <!-- Point Display Card -->
+    <div class="glass-card point-display slide-up">
+        <p class="point-label">現在の運ポイント</p>
+        <div class="point-value" id="totalPoint">{{ all_total_point }}P</div>
 
-<h2 class="headline" style="text-align: left; position: relative;">Fortune Teller</h2>
-
-<style type="text/css">
-        .headline{
-            background-color:#3C3A38;
-            color:#f5f4ef;
-            padding : 1em;
-            font-family: serif ;
-        }
-        </style>
-
-
-
-<div class="area" id="Back">
-        <div class="container">
-                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/pre_graph" role="button">運勢診断</a>
-                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/history" role="button">履歴</a>
-                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/helppre" role="button">HELP</a>
-                <a class="btn btn-info btn-lg m-5 btn-square-raised item" href="/unpograph" role="button">運ポグラフ</a>
+        <!-- Mode Badge -->
+        <div class="mode-badge" id="modeBadge">
+            <span id="modeIcon">✨</span>
+            <span id="modeText">通常モード</span>
         </div>
-        <div class="container" style="align-items: center;">
-        <div class="NowPoint" style="margin-left: 9%;margin-right: 9%;">現在の運ポイント</div>
-        <div class="NowPoint1"style="margin-left: 15%;margin-right: 15%;">{{ all_total_point }}P</div>
-        </div>
+    </div>
 
-        
-        <!-- 頑張った、良い事あったページに遷移 -->
-        <div class="container" style="justify-content: center;">
-                <a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto"  href="/create" role="button">頑張った</a>
-                <a class="btn btn-info btn-lg m-5 btn-square-raised-Ganbatta-Yoikoto" href="/create1" role="button">良い事あった</a>
-        </div>
-       
+    <!-- Quick Actions -->
+    <div class="action-grid mt-xl">
+        <a href="/pre_graph" class="action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a10 10 0 0 1 0 20"/>
+                <path d="M12 2v10l7 4"/>
+            </svg>
+            <span>運勢診断</span>
+        </a>
+        <a href="/unpograph" class="action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3v18h18"/>
+                <path d="M18 17l-5-5-4 4-5-6"/>
+            </svg>
+            <span>運ポグラフ</span>
+        </a>
+        <a href="/history" class="action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 8v4l3 3"/>
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+            <span>履歴</span>
+        </a>
+        <a href="/helppre" class="action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span>ヘルプ</span>
+        </a>
+    </div>
 
-        <!-- <ul class="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-        </ul> -->
-</div >
+    <!-- Main Action Buttons -->
+    <div class="main-actions">
+        <a href="/create" class="main-action-btn effort">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>頑張った</span>
+        </a>
+        <a href="/create1" class="main-action-btn good">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span>良いことあった</span>
+        </a>
+    </div>
+</div>
 
-<style type="text/css">
-        .container{
-                display: flex;
-        }
-       .item{
-               margin: 10px;
-               padding: 10px;
-       }
-</style>
+<script>
+    // Mode switching based on points
+    const totalPoint = {{ all_total_point }};
+    const modeBadge = document.getElementById('modeBadge');
+    const modeIcon = document.getElementById('modeIcon');
+    const modeText = document.getElementById('modeText');
 
-
-
-
-<p class="NowPoint2" id="sampleArea" style="position: absolute; right: 2%; bottom: 89.5%">通常モード</p>
-
-<style type="text/css">
-        .NowPoint2{
-            color:#f5f4ef;
-            font-family: serif ;
-            font-size: 50px;
-        }
-        </style>
-
-
-
-
-<!-- <input type="text" id="dispvalue" value="0" style="position: absolute; left: 40%; bottom: 60%; width:20%; height:15%"/> -->
-
-<script type="text/javascript" >
-        var sampleArea = document.getElementById("sampleArea");
-        var obj = document.getElementById("Back");
-
-        if({{all_total_point}}  > 15){
-                sampleArea.innerHTML = "ラッキーモード";
-                obj.style.backgroundColor = "#FF99CC";
-
-        // else({{all_total_point}}  > 5){
-        //         sampleArea.innerHTML = "フィーバーモード";
-        //         obj.style.backgroundColor = "#FF99CC";
-
-        }
-
- </script>
-
-<!-- <a href="#" class="btn-real">頑張った</a> -->
-
+    if (totalPoint > 15) {
+        modeBadge.classList.add('lucky');
+        modeIcon.textContent = '🌟';
+        modeText.textContent = 'ラッキーモード';
+    } else {
+        modeBadge.classList.add('normal');
+    }
+</script>
 {% endblock %}
-
-

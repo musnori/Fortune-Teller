@@ -1,79 +1,218 @@
 {% extends 'base.html' %}
 
+{% block title %}履歴 - Fortune Teller{% endblock %}
 
+{% block nav_history %}active{% endblock %}
 
+{% block body %}
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">履歴</h1>
+        <p class="page-subtitle">これまでの記録を振り返ろう</p>
+    </header>
 
-{% block headline %}
-<h2 class="headline" style="text-align: center; position: relative;">これまでの記録を見てみよう！</h2>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
-<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
-height:12%; position:absolute; left:82%;  bottom:88%;" >
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('entries')">記録一覧</button>
+        <button class="tab-btn" onclick="switchTab('daily')">日別集計</button>
+    </div>
 
+    <!-- Entries Tab -->
+    <div id="entries-tab" class="tab-content active">
+        <div class="history-list slide-up">
+            {% if posts %}
+                {% for post in posts|reverse %}
+                <div class="history-card">
+                    <div class="history-card-header">
+                        <span class="history-card-date">{{ post.due.strftime('%Y/%m/%d') }}</span>
+                        <span class="history-card-point {% if post.point > 0 %}positive{% else %}negative{% endif %}">
+                            {% if post.point > 0 %}+{% endif %}{{ post.point }}P
+                        </span>
+                    </div>
+                    <h3 class="history-card-title">{{ post.title }}</h3>
+                    <span class="history-card-category">{{ post.object }}</span>
+                    {% if post.detail %}
+                    <p class="history-card-detail">{{ post.detail }}</p>
+                    {% endif %}
+                    <div class="history-card-actions">
+                        <a href="/detail/{{ post.id }}" class="btn btn-sm btn-outline">詳細</a>
+                        <a href="/update/{{ post.id }}" class="btn btn-sm btn-secondary">編集</a>
+                        <a href="/delete/{{ post.id }}" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v4l3 3"/>
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                    <p>まだ記録がありません</p>
+                    <a href="/create" class="btn btn-primary mt-md">最初の記録をつける</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
-<style type="text/css">
-.headline{
-    background-color:#3C3A38;
-    color:#f5f4ef;
-    padding : 1.4em;
-    font-family: serif ;
-}
-</style>
-
-
-<p style="text-align: center; font-size: 7vh;" >得点履歴</p>
-{% for post in posts %}
-<div class="card w-50 mb-3" style="margin: auto;">
-    <div class=“card-body”>
-        <!-- <p>{{ post.due.date() }}</p> -->
-        <!-- <h2 class=“card-title”>タイトル : {{ post.title }}</h2>
-        <h2 class=“card-title”>ポイント : {{ post.point }}</h2> -->
-        <ul class="list-group list-group-flush" style="font-size: 3vh;">
-            <li class="list-group-item">{{ post.due.date() }}</li>
-            <li class="list-group-item">カテゴリ : {{ post.object }}</li>
-            <li class="list-group-item">タイトル : {{ post.title }}</li>
-            <li class="list-group-item">ポイント : {{ post.point }}</li>
-        </ul>
-        <a class="btn btn-secondary btn-sm" href="/detail/{{ post.id }}" role="button" >詳細</a>
-        <a class="btn btn-success btn-sm" href="/update/{{ post.id }}" role="button" >更新</a>
-        <a class="btn btn-danger btn-sm" href="/delete/{{ post.id }}" role="button" >削除</a>
+    <!-- Daily Tab -->
+    <div id="daily-tab" class="tab-content">
+        <div class="history-list slide-up">
+            {% if points %}
+                {% for point in points|reverse %}
+                <div class="daily-summary">
+                    <div class="daily-summary-info">
+                        <span class="daily-summary-date">{{ point.due.strftime('%Y/%m/%d') }}</span>
+                        <span class="daily-summary-label">1日の合計</span>
+                    </div>
+                    <div class="daily-summary-right">
+                        <span class="daily-summary-point {% if point.point > 0 %}positive{% elif point.point < 0 %}negative{% endif %}">
+                            {% if point.point > 0 %}+{% endif %}{{ point.point }}P
+                        </span>
+                        <a href="/delete_point/{{ point.id }}" class="btn btn-sm btn-danger" onclick="return confirm('本当に削除しますか？')">削除</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <p>まだデータがありません</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
-{% endfor %}
 
-<br>
-<br>
+<style>
+    /* Tab Navigation */
+    .tab-nav {
+        display: flex;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+        background: rgba(255, 255, 255, 0.1);
+        padding: var(--space-xs);
+        border-radius: var(--radius-full);
+    }
 
+    .tab-btn {
+        flex: 1;
+        padding: var(--space-sm) var(--space-md);
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        font-family: var(--font-main);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
 
-<p style="text-align: center; font-size: 7vh;">1日の総得点</p>
+    .tab-btn.active {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--white);
+    }
 
-{% for point in points %}
-<div class="card w-50 mb-3" style="margin: auto; font-size: 3vh;" >
-    <div class=“card-body”>
-        <!-- <p>{{ point.due.date() }}</p> -->
-        <!-- <h2 class=“card-title”>ポイント{{ point.point }}</h2>  -->
-        <li class="list-group-item">{{ point.due.date() }}</li>
-        <li class="list-group-item">1日の総ポイント : {{ point.point }}</li>
-        <a class="btn btn-danger btn-sm" href="/delete_point/{{ point.id }}" role="button" >削除</a>
-    </div>
-</div>
-{% endfor %}
-{% endblock %}
+    .tab-btn:hover:not(.active) {
+        color: var(--white);
+    }
 
-{% block footer %}
-<style type="text/css">
-    
-    footer{
-        position:relative;/*←絶対位置*/
-        bottom: 0; /*下に固定*/
+    /* Tab Content */
+    .tab-content {
+        display: none;
+    }
 
-        background-color:#3C3A38;
-        /* color:#f5f4ef; */
-        width: 100%;
-        font-family: serif ;
+    .tab-content.active {
+        display: block;
+    }
+
+    /* History Card Detail */
+    .history-card-detail {
+        font-size: var(--font-size-sm);
+        opacity: 0.7;
+        margin-top: var(--space-sm);
+        padding-top: var(--space-sm);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Daily Summary */
+    .daily-summary {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-md);
+        padding: var(--space-lg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-md);
+    }
+
+    .daily-summary-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .daily-summary-date {
+        font-weight: 500;
+    }
+
+    .daily-summary-label {
+        font-size: var(--font-size-xs);
+        opacity: 0.6;
+    }
+
+    .daily-summary-right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+    }
+
+    .daily-summary-point {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+    }
+
+    .daily-summary-point.positive {
+        color: var(--accent-light);
+    }
+
+    .daily-summary-point.negative {
+        color: var(--secondary-light);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: var(--space-2xl);
+        opacity: 0.7;
+    }
+
+    .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: var(--space-md);
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        margin-bottom: var(--space-md);
     }
 </style>
 
-<a class="btn-help" href="/" role="button">戻る</a>
+<script>
+    function switchTab(tabName) {
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
+        // Add active class to selected tab and content
+        event.target.classList.add('active');
+        document.getElementById(tabName + '-tab').classList.add('active');
+    }
+</script>
 {% endblock %}
- 

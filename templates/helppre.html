@@ -1,120 +1,86 @@
 {% extends 'base.html' %}
 
-{% block head %}
-<meta charset="utf-8">
-<title>8-8 ランダムに出現</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
- <!--==============レイアウトを制御する独自のCSSを読み込み===============-->
-<!-- <link rel="stylesheet" type="text/css" href="http://coco-factory.jp/ugokuweb/wp-content/themes/ugokuweb/data/move02/8-8/css/reset.css"> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css"> -->
-<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/otameshi.css') }}"> -->
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/img_help.css') }}">
-
-
-
-
-
-{% endblock %}
-
-
-
-
-{% block headline %}
-
-
-
-<h2 class="headline" style="text-align: center; position: relative;">過去の自分にHelpしますか？</h2>
-
-<img src="static/img/Fortune-Teller-rogo.png" alt="カネケン " title="カネケンロゴ" style="width:16% ;
-height:12%; position:absolute; left:82%;  bottom:88%;" >
-
-<style type="text/css">
-.headline{
-    background-color:#3C3A38;
-    color:#f5f4ef;
-    padding : 1.4em;
-    font-family: serif ;
-}
-</style>
-
-{% endblock %}
-
-
+{% block title %}ヘルプ - Fortune Teller{% endblock %}
 
 {% block body %}
-<style type="text/css">
-    .help-require{
-        position:absolute;
-        font-size: 40px;
-        font-family: serif ;
-        color : rgb(0, 0, 0);
-        position: absolute; 
-        left: 33%;
-        bottom:50% ;
-    }
-</style>
-
-
-
-<!-- <p class ='help-require'>過去の自分にHelpしますか？</p>
-
-<a class="btn-help" href="/help" role="button" style="position: absolute; left: 53%; bottom: 38%">Yes</a> -->
-
-
-
-<form method='POST' action='/help' target=“goaltarget” style='position:fixed; left:40%; bottom:50%; width: auto;'>
-    <label for=“selectgoal”>Goal選択</label><br>
-            <select type="text" class="form-control" name="object">
-            <option value="" hidden>あなたのGoalを選択してください</option>
-            <option value="総合">総合</option>
-            <option value="テスト">テスト</option>
-            <option value="プロジェクト">プロジェクト</option>
-            <option value="発表会">発表会</option>
-            <option value=“語学学習“>語学学習</option>
-            <option value=“ゲーム“>ゲーム</option>
-            <option value=“恋愛“>恋愛</option>
-            <option value=“就職“>就職</option>
-            <option value=“生活習慣“>生活習慣</option>
-            <option value=“受験“>受験</option>
-            <option value=“その他“>その他</option>
-            </select>
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <div class="help-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
         </div>
-    </select>
-    <button type=“submit” class=“btn-help” style='position:fixed; left:44%; bottom:38%; width: 10%; height:5%;'>Helpする</button>
-        <!-- <div>
-        <input type=“button” value=“Check” id=“checkButton”>
-        </div> -->
-        <script>
-        function butotnClick(){
-          console.log('選択されているのは' + goalSelect.value + ' です');
-        }
-        let goalSelect = document.getElementById('goal');
-        goalSelect.options[0].selected = true;
-        let checkButton = document.getElementById('checkButton');
-        checkButton.addEventListener('click', butotnClick);
-        </script>
+        <h1 class="page-title">ヘルプ</h1>
+        <p class="page-subtitle">過去の自分からヒントを得よう</p>
+    </header>
+
+    <!-- Category Selection -->
+    <div class="glass-card slide-up">
+        <form method="POST" action="/help">
+            <div class="form-group">
+                <label class="form-label">カテゴリを選択</label>
+                <select class="form-select" name="object">
+                    <option value="総合">🌟 すべてのカテゴリ</option>
+                    <option value="テスト">📝 テスト</option>
+                    <option value="プロジェクト">💼 プロジェクト</option>
+                    <option value="発表会">🎤 発表会</option>
+                    <option value="語学学習">🌍 語学学習</option>
+                    <option value="ゲーム">🎮 ゲーム</option>
+                    <option value="恋愛">💕 恋愛</option>
+                    <option value="就職">👔 就職</option>
+                    <option value="生活習慣">🏃 生活習慣</option>
+                    <option value="受験">📚 受験</option>
+                    <option value="その他">✨ その他</option>
+                </select>
+            </div>
+
+            <p class="help-description">
+                選択したカテゴリの過去の記録からランダムに表示します。
+                過去の自分がどんなことを頑張っていたか振り返ってみましょう。
+            </p>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-xl">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                ヘルプを見る
+            </button>
         </form>
+    </div>
+</div>
 
-{% endblock %}
+<style>
+    .help-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto var(--space-md);
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 40px rgba(168, 237, 234, 0.4);
+    }
 
+    .help-icon svg {
+        width: 40px;
+        height: 40px;
+        color: var(--gray-700);
+    }
 
-{% block footer %}
-
-<style type="text/css">
-    
-    footer{
-        position: absolute;/*←絶対位置*/
-        bottom: 0; /*下に固定*/
-
-        background-color:#3C3A38;
-        /* color:#f5f4ef; */
-        width: 100%;
-        font-family: serif ;
+    .help-description {
+        font-size: var(--font-size-sm);
+        opacity: 0.8;
+        line-height: 1.8;
+        text-align: center;
+        padding: var(--space-lg);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--radius-md);
     }
 </style>
-
-<a class="btn-help" href="/" role="button">戻る</a>
-
-
 {% endblock %}

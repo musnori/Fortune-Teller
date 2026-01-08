@@ -1,23 +1,110 @@
 {% extends 'base.html' %}
 
+{% block title %}詳細 - Fortune Teller{% endblock %}
+
 {% block body %}
-<h2 class="m-5" style="text-align: center;">詳細</h2>
-<div class="card w-50 mb-3" style="margin: auto;">
-    <div class="card-body">
-        <h2 class="card-title">タイトル：{{ post.title }}</h2>
-        <span class="ml-3" style="font-size: 1em;">日付：{{ post.due.date() }}</span>
-        <ul class="list-group list-group-flush">
-            <!-- <li class="list-group-item">{{ post.due.date() }}</li> -->
-            <li class="list-group-item">メモ : {{ post.detail }}</li>
-            <li class="list-group-item">タイトル : {{ post.title }}</li>
-            <li class="list-group-item">ポイント : {{ post.point }}</li>
-          </ul>
-        
-        <!-- <p>メモ：{{ post.detail }}</p> -->
-        <!-- <p>ポイント：{{ post.point }}</p> -->
-        <a class="btn btn-outline-success" href="/" role="button">Return</a>
-        <a class="btn btn-success" href="update/{{ post.id }}" role="button">Update</a>
+<div class="fade-in">
+    <!-- Header -->
+    <header class="text-center mb-xl">
+        <h1 class="page-title">記録の詳細</h1>
+    </header>
+
+    <!-- Detail Card -->
+    <div class="glass-card slide-up">
+        <div class="detail-header">
+            <span class="detail-date">{{ post.due.strftime('%Y年%m月%d日') }}</span>
+            <span class="detail-point {% if post.point > 0 %}positive{% else %}negative{% endif %}">
+                {% if post.point > 0 %}+{% endif %}{{ post.point }}P
+            </span>
+        </div>
+
+        <h2 class="detail-title">{{ post.title }}</h2>
+
+        <div class="detail-category">
+            <span class="category-badge">{{ post.object }}</span>
+        </div>
+
+        {% if post.detail %}
+        <div class="detail-memo">
+            <label class="detail-label">メモ</label>
+            <p class="detail-text">{{ post.detail }}</p>
+        </div>
+        {% endif %}
+
+        <div class="btn-group mt-xl">
+            <a href="/" class="btn btn-secondary">戻る</a>
+            <a href="/update/{{ post.id }}" class="btn btn-primary" style="flex: 1;">編集する</a>
+        </div>
     </div>
 </div>
-{% endblock %}
 
+<style>
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-md);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-date {
+        font-size: var(--font-size-sm);
+        opacity: 0.7;
+    }
+
+    .detail-point {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+        padding: var(--space-xs) var(--space-md);
+        border-radius: var(--radius-md);
+    }
+
+    .detail-point.positive {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--accent-light);
+    }
+
+    .detail-point.negative {
+        background: rgba(236, 72, 153, 0.2);
+        color: var(--secondary-light);
+    }
+
+    .detail-title {
+        font-size: var(--font-size-2xl);
+        font-weight: 600;
+        margin-bottom: var(--space-md);
+    }
+
+    .detail-category {
+        margin-bottom: var(--space-lg);
+    }
+
+    .category-badge {
+        display: inline-block;
+        padding: var(--space-xs) var(--space-md);
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+    }
+
+    .detail-memo {
+        background: rgba(255, 255, 255, 0.05);
+        padding: var(--space-lg);
+        border-radius: var(--radius-md);
+    }
+
+    .detail-label {
+        display: block;
+        font-size: var(--font-size-xs);
+        opacity: 0.6;
+        margin-bottom: var(--space-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .detail-text {
+        line-height: 1.8;
+    }
+</style>
+{% endblock %}
