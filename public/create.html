@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Record Effort - Fortune Teller</title>
+    <title>努力を記録 - 運勢トラッカー</title>
 </head>
 <body>
     <!-- Background Animation -->
@@ -20,66 +20,91 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Main Content -->
     <div class="app-container">
         <div class="fade-in">
             <!-- Header -->
-            <header class="text-center mb-xl">
+            <header class="app-header">
                 <div class="page-icon effort-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                 </div>
-                <h1 class="page-title">I Worked Hard!</h1>
-                <p class="page-subtitle">Record your effort</p>
+                <h1 class="app-title" data-i18n="record.effort.title">努力を記録</h1>
+                <p class="app-subtitle" data-i18n="record.effort.subtitle">頑張ったことを記録しましょう</p>
             </header>
 
             <!-- Form Card -->
             <div class="glass-card slide-up">
                 <form id="effortForm">
-                    <!-- Goal Select -->
+                    <!-- Category Chips -->
                     <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" name="object" required>
-                            <option value="" hidden>Select category</option>
-                            <option value="Test">Test</option>
-                            <option value="Project">Project</option>
-                            <option value="Presentation">Presentation</option>
-                            <option value="Language">Language Learning</option>
-                            <option value="Game">Game</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Career">Career</option>
-                            <option value="Lifestyle">Lifestyle</option>
-                            <option value="Exam">Exam</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <label class="form-label" data-i18n="record.form.category">カテゴリ</label>
+                        <div class="category-chips" id="categoryChips">
+                            <button type="button" class="category-chip" data-value="work">
+                                <span>仕事</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="study">
+                                <span>勉強</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="exercise">
+                                <span>運動</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="health">
+                                <span>健康</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="hobby">
+                                <span>趣味</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="social">
+                                <span>人間関係</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="other">
+                                <span>その他</span>
+                            </button>
+                        </div>
+                        <input type="hidden" name="object" id="categoryInput" value="" required>
                     </div>
 
                     <!-- Title -->
                     <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-input" name="title" placeholder="What did you work hard on?" required>
+                        <label class="form-label" data-i18n="record.form.title">タイトル</label>
+                        <input type="text" class="form-input" name="title"
+                               data-i18n-placeholder="record.form.titlePlaceholder"
+                               placeholder="何をしましたか？" required>
                     </div>
 
                     <!-- Memo -->
                     <div class="form-group">
-                        <label class="form-label">Memo (optional)</label>
-                        <textarea class="form-textarea" name="detail" placeholder="Add details if you want"></textarea>
+                        <label class="form-label" data-i18n="record.form.memo">メモ</label>
+                        <textarea class="form-textarea" name="detail"
+                                  data-i18n-placeholder="record.form.memoPlaceholder"
+                                  placeholder="詳細を記入（任意）"></textarea>
                     </div>
 
                     <!-- Date -->
                     <div class="form-group">
-                        <label class="form-label">Date</label>
+                        <label class="form-label" data-i18n="record.form.date">日付</label>
                         <input type="date" class="form-input" name="due" id="regist_date" required>
                     </div>
 
                     <!-- Point Counter -->
                     <div class="form-group">
-                        <label class="form-label text-center">Points Earned</label>
+                        <label class="form-label text-center" data-i18n="record.form.points">獲得ポイント</label>
                         <div class="point-counter">
-                            <button type="button" class="point-counter-btn" onclick="decrementPoint()">-</button>
-                            <span class="point-counter-value" id="pointDisplay">1</span>
-                            <button type="button" class="point-counter-btn" onclick="incrementPoint()">+</button>
+                            <button type="button" class="point-counter-btn" id="decrementBtn">−</button>
+                            <span class="point-counter-value" id="pointDisplay">1<span style="font-size: 0.6em;">pt</span></span>
+                            <button type="button" class="point-counter-btn" id="incrementBtn">+</button>
+                        </div>
+                        <!-- Point Presets -->
+                        <div class="point-presets">
+                            <button type="button" class="point-preset" data-value="1">+1</button>
+                            <button type="button" class="point-preset" data-value="2">+2</button>
+                            <button type="button" class="point-preset" data-value="3">+3</button>
+                            <button type="button" class="point-preset" data-value="5">+5</button>
                         </div>
                         <input type="hidden" name="point" id="pointInput" value="1">
                     </div>
@@ -90,12 +115,12 @@
 
                     <!-- Buttons -->
                     <div class="btn-group">
-                        <a href="index.html" class="btn btn-secondary">Back</a>
+                        <a href="index.html" class="btn btn-secondary" data-i18n="record.form.cancel">キャンセル</a>
                         <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
-                            Record
+                            <span data-i18n="record.form.save">保存する</span>
                         </button>
                     </div>
                 </form>
@@ -103,27 +128,28 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Home</span>
+            <span data-i18n="nav.home">ホーム</span>
+        </a>
+        <a href="create.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span data-i18n="nav.record">記録</span>
         </a>
         <a href="fortune.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M12 16v-4M12 8h.01"/>
             </svg>
-            <span>Fortune</span>
-        </a>
-        <a href="create.html" class="nav-item nav-add active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+            <span data-i18n="nav.fortune">運勢</span>
         </a>
         <a href="graph.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -131,21 +157,21 @@
                 <line x1="12" y1="20" x2="12" y2="4"/>
                 <line x1="6" y1="20" x2="6" y2="14"/>
             </svg>
-            <span>Graph</span>
+            <span data-i18n="nav.graph">推移</span>
         </a>
         <a href="history.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
             </svg>
-            <span>History</span>
+            <span data-i18n="nav.history">履歴</span>
         </a>
     </nav>
 
     <style>
         .page-icon {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto var(--space-md);
             border-radius: 50%;
             display: flex;
@@ -154,44 +180,102 @@
         }
 
         .page-icon svg {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
         }
 
         .effort-icon {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 10px 40px rgba(240, 147, 251, 0.4);
+            background: var(--gradient-effort);
+            box-shadow: 0 8px 32px rgba(91, 110, 225, 0.4);
         }
     </style>
 
     <script src="js/storage.js"></script>
+    <script src="js/i18n.js"></script>
     <script>
-        // Set today's date
-        document.getElementById('regist_date').value = FortuneTeller.getTodayString();
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await I18n.init('ja');
+
+            // Set today's date
+            document.getElementById('regist_date').value = FortuneTeller.getTodayString();
+        });
+
+        // Category selection
+        const categoryChips = document.querySelectorAll('.category-chip');
+        const categoryInput = document.getElementById('categoryInput');
+
+        categoryChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                categoryChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                categoryInput.value = this.dataset.value;
+            });
+        });
 
         // Point counter
         let pointValue = 1;
+        const pointDisplay = document.getElementById('pointDisplay');
+        const pointInput = document.getElementById('pointInput');
 
         function updatePointDisplay() {
-            document.getElementById('pointDisplay').textContent = pointValue;
-            document.getElementById('pointInput').value = pointValue;
+            pointDisplay.innerHTML = pointValue + '<span style="font-size: 0.6em;">pt</span>';
+            pointInput.value = pointValue;
+
+            // Update preset active state
+            document.querySelectorAll('.point-preset').forEach(p => {
+                p.classList.toggle('active', parseInt(p.dataset.value) === pointValue);
+            });
         }
 
-        function incrementPoint() {
-            pointValue++;
-            updatePointDisplay();
-        }
+        document.getElementById('incrementBtn').addEventListener('click', () => {
+            if (pointValue < 99) {
+                pointValue++;
+                updatePointDisplay();
+            }
+        });
 
-        function decrementPoint() {
+        document.getElementById('decrementBtn').addEventListener('click', () => {
             if (pointValue > 1) {
                 pointValue--;
                 updatePointDisplay();
             }
+        });
+
+        // Point presets
+        document.querySelectorAll('.point-preset').forEach(preset => {
+            preset.addEventListener('click', function() {
+                pointValue = parseInt(this.dataset.value);
+                updatePointDisplay();
+            });
+        });
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success'
+                        ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+                        : '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
 
         // Form submission
         document.getElementById('effortForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Validate category
+            if (!categoryInput.value) {
+                showToast('カテゴリを選択してください', 'error');
+                return;
+            }
 
             const formData = new FormData(this);
             const post = {
@@ -205,8 +289,15 @@
             };
 
             FortuneTeller.addPost(post);
-            window.location.href = 'index.html';
+            showToast(I18n.t('record.toast.saved'));
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
         });
+
+        // Initialize preset active state
+        updatePointDisplay();
     </script>
 </body>
 </html>

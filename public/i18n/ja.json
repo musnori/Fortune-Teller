@@ -1,0 +1,209 @@
+{
+  "app": {
+    "name": "運勢トラッカー",
+    "tagline": "毎日の努力で「運」を育てる"
+  },
+  "nav": {
+    "home": "ホーム",
+    "record": "記録",
+    "fortune": "運勢",
+    "graph": "推移",
+    "history": "履歴",
+    "settings": "設定"
+  },
+  "home": {
+    "currentPoints": "現在の運ポイント",
+    "pointUnit": "pt",
+    "modeNormal": "通常モード",
+    "modeLucky": "ラッキーモード",
+    "todaySummary": "今日のサマリー",
+    "effortCount": "今日の努力",
+    "goodThingCount": "今日の良いこと",
+    "streak": "連続記録",
+    "streakDays": "日",
+    "recordEffort": "努力を記録",
+    "recordGoodThing": "良いことがあった",
+    "viewFortune": "今日の運勢を見る"
+  },
+  "record": {
+    "effort": {
+      "title": "努力を記録",
+      "subtitle": "頑張ったことを記録しましょう"
+    },
+    "goodThing": {
+      "title": "良いことがあった",
+      "subtitle": "幸運を使った記録です",
+      "pointNote": "運を1消費（-1pt）"
+    },
+    "form": {
+      "category": "カテゴリ",
+      "title": "タイトル",
+      "titlePlaceholder": "何をしましたか？",
+      "memo": "メモ",
+      "memoPlaceholder": "詳細を記入（任意）",
+      "date": "日付",
+      "points": "獲得ポイント",
+      "save": "保存する",
+      "cancel": "キャンセル"
+    },
+    "categories": {
+      "work": "仕事",
+      "study": "勉強",
+      "exercise": "運動",
+      "health": "健康",
+      "hobby": "趣味",
+      "social": "人間関係",
+      "other": "その他"
+    },
+    "toast": {
+      "saved": "記録を保存しました",
+      "deleted": "記録を削除しました",
+      "error": "エラーが発生しました"
+    }
+  },
+  "fortune": {
+    "title": "今日の運勢",
+    "subtitle": "あなたの運勢を占います",
+    "resultLabel": "今日は",
+    "effortMultiplier": "努力倍率",
+    "luckMultiplier": "運倍率",
+    "multiplierHelp": "倍率について",
+    "multiplierExplanation": "努力倍率：努力記録時のポイント獲得率\n運倍率：良いことが起きやすさの目安",
+    "recommendation": "今日おすすめの行動",
+    "copyResult": "結果をコピー",
+    "copied": "コピーしました",
+    "ranks": {
+      "1": "大吉",
+      "2": "吉",
+      "3": "中吉",
+      "4": "小吉",
+      "5": "末吉",
+      "6": "凶",
+      "7": "小凶",
+      "8": "大凶"
+    },
+    "messages": {
+      "1": "最高の運気です！新しいことに挑戦してみましょう",
+      "2": "良い運気です。努力が実を結ぶ日",
+      "3": "まずまずの運気。コツコツ続けましょう",
+      "4": "穏やかな運気。日常を大切に",
+      "5": "慎重に行動すれば運が開けます",
+      "6": "今日は整える日。無理せず",
+      "7": "焦らず一歩ずつ進みましょう",
+      "8": "休息と準備の日。次に備えて"
+    },
+    "recommendations": {
+      "1": "新しいプロジェクトを始める",
+      "2": "大事な決断をする",
+      "3": "スキルアップの勉強",
+      "4": "身の回りの整理整頓",
+      "5": "計画の見直し",
+      "6": "休息とリラックス",
+      "7": "読書や内省の時間",
+      "8": "早めに休む"
+    }
+  },
+  "graph": {
+    "title": "推移グラフ",
+    "periods": {
+      "7days": "7日",
+      "30days": "30日",
+      "all": "全期間"
+    },
+    "stats": {
+      "total": "合計",
+      "average": "平均",
+      "max": "最大",
+      "streak": "連続記録"
+    }
+  },
+  "history": {
+    "title": "履歴",
+    "filter": {
+      "all": "すべて",
+      "effort": "努力",
+      "goodThing": "良いこと"
+    },
+    "search": {
+      "placeholder": "タイトル・メモで検索"
+    },
+    "empty": "記録がありません",
+    "confirmDelete": "この記録を削除しますか？",
+    "edit": "編集",
+    "delete": "削除",
+    "dailyTotal": "この日の合計"
+  },
+  "settings": {
+    "title": "設定",
+    "goalPoints": {
+      "title": "目標運ポイント",
+      "description": "達成を目指すポイント数"
+    },
+    "dailyLimit": {
+      "title": "1日の獲得上限",
+      "description": "1日に獲得できる最大ポイント"
+    },
+    "pointRule": {
+      "title": "運ポイントルール",
+      "description": "良いことがあった時のポイント変動",
+      "options": {
+        "subtract": "努力+ / 良いこと-1（デフォルト）",
+        "add": "努力+ / 良いこと+1",
+        "none": "努力+ / 良いこと変動なし"
+      }
+    },
+    "darkMode": {
+      "title": "ダークモード",
+      "description": "画面の明るさを抑えます"
+    },
+    "data": {
+      "title": "データ管理",
+      "export": "データをエクスポート",
+      "import": "データをインポート",
+      "reset": "データをリセット",
+      "resetConfirm": "本当にすべてのデータを削除しますか？",
+      "resetConfirmFinal": "この操作は取り消せません。本当に削除しますか？",
+      "exported": "データをエクスポートしました",
+      "imported": "データをインポートしました",
+      "resetComplete": "データをリセットしました"
+    }
+  },
+  "help": {
+    "title": "使い方",
+    "sections": {
+      "overview": {
+        "title": "運勢トラッカーとは",
+        "content": "毎日の努力を記録して「運」を貯めるアプリです。良いことがあったら運を使って記録します。"
+      },
+      "effort": {
+        "title": "努力を記録",
+        "content": "勉強、運動、仕事など頑張ったことを記録すると運ポイントが増えます。"
+      },
+      "goodThing": {
+        "title": "良いことがあった",
+        "content": "ラッキーなことがあったら記録しましょう。運ポイントを1消費します。"
+      },
+      "fortune": {
+        "title": "運勢を見る",
+        "content": "現在の運ポイントに基づいて今日の運勢を占います。"
+      },
+      "philosophy": {
+        "title": "このアプリの考え方",
+        "content": "「運は努力で作れる」という考えに基づいています。日々の小さな努力が、良いことを引き寄せる力になります。"
+      }
+    }
+  },
+  "common": {
+    "points": "pt",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "close": "閉じる",
+    "confirm": "確認",
+    "back": "戻る",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功"
+  }
+}
