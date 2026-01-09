@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Fortune Telling - Fortune Teller</title>
+    <title>今日の運勢 - 運勢トラッカー</title>
 </head>
 <body>
     <!-- Background Animation -->
@@ -20,11 +20,14 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Main Content -->
     <div class="app-container">
         <div class="fade-in">
             <!-- Header -->
-            <header class="text-center mb-xl">
+            <header class="app-header">
                 <div class="fortune-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
@@ -32,17 +35,17 @@
                         <path d="M12 2v10l7 4"/>
                     </svg>
                 </div>
-                <h1 class="page-title">Fortune Telling</h1>
-                <p class="page-subtitle">Check your luck today</p>
+                <h1 class="app-title" data-i18n="fortune.title">今日の運勢</h1>
+                <p class="app-subtitle" data-i18n="fortune.subtitle">あなたの運勢を占います</p>
             </header>
 
             <!-- Fortune Form -->
             <div id="fortuneForm" class="glass-card slide-up">
                 <div class="fortune-intro">
-                    <p class="fortune-intro-text">Your luck is calculated based on your accumulated points!</p>
+                    <p class="fortune-intro-text">現在の運ポイントに基づいて運勢を占います</p>
                     <div class="current-points">
-                        <span class="points-label">Current Points:</span>
-                        <span class="points-value" id="currentPoints">0P</span>
+                        <span class="points-label" data-i18n="home.currentPoints">現在の運ポイント</span>
+                        <span class="points-value" id="currentPoints">0pt</span>
                     </div>
                 </div>
 
@@ -52,76 +55,94 @@
                         <path d="M12 2a10 10 0 0 1 0 20"/>
                         <path d="M12 2v10l7 4"/>
                     </svg>
-                    Tell My Fortune
+                    <span data-i18n="home.viewFortune">今日の運勢を見る</span>
                 </button>
-
-                <div class="fortune-tips mt-xl">
-                    <h3 class="section-title">Tips</h3>
-                    <ul class="tips-list">
-                        <li>More points = better fortune!</li>
-                        <li>Record your efforts daily</li>
-                        <li>Good things use up your luck</li>
-                    </ul>
-                </div>
             </div>
 
             <!-- Fortune Result (hidden initially) -->
             <div id="fortuneResult" class="glass-card fortune-result slide-up" style="display: none;">
                 <div class="result-header">
-                    <span class="result-label">Today's Fortune</span>
+                    <span class="result-label" data-i18n="fortune.resultLabel">今日は</span>
                 </div>
                 <div class="fortune-rank" id="fortuneRank"></div>
                 <div class="fortune-message" id="fortuneMessage"></div>
 
+                <!-- Recommendation -->
+                <div class="fortune-recommendation" id="fortuneRecommendation">
+                    <div class="recommendation-label" data-i18n="fortune.recommendation">今日おすすめの行動</div>
+                    <div class="recommendation-text" id="recommendationText"></div>
+                </div>
+
                 <div class="fortune-weights">
                     <div class="fortune-weight">
-                        <div class="fortune-weight-icon">*</div>
-                        <div class="fortune-weight-label">Effort Multiplier</div>
+                        <div class="fortune-weight-label">
+                            <span data-i18n="fortune.effortMultiplier">努力倍率</span>
+                            <span class="tooltip">
+                                <svg class="tooltip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 16v-4M12 8h.01"/>
+                                </svg>
+                                <span class="tooltip-content">努力記録時のポイント獲得率</span>
+                            </span>
+                        </div>
                         <div class="fortune-weight-value" id="effortWeight">x1.0</div>
                     </div>
                     <div class="fortune-weight">
-                        <div class="fortune-weight-icon">*</div>
-                        <div class="fortune-weight-label">Luck Multiplier</div>
+                        <div class="fortune-weight-label">
+                            <span data-i18n="fortune.luckMultiplier">運倍率</span>
+                            <span class="tooltip">
+                                <svg class="tooltip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 16v-4M12 8h.01"/>
+                                </svg>
+                                <span class="tooltip-content">良いことが起きやすさの目安</span>
+                            </span>
+                        </div>
                         <div class="fortune-weight-value" id="luckWeight">x1.0</div>
                     </div>
                 </div>
 
                 <div class="btn-group mt-xl">
-                    <button onclick="tryAgain()" class="btn btn-secondary btn-lg">
-                        Try Again
+                    <button onclick="copyResult()" class="btn btn-outline">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        <span data-i18n="fortune.copyResult">結果をコピー</span>
                     </button>
-                    <a href="create.html" class="btn btn-primary btn-lg btn-block">
+                    <a href="create.html" class="btn btn-primary btn-lg" style="flex: 1;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
-                        Record Effort
+                        <span data-i18n="home.recordEffort">努力を記録</span>
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Home</span>
+            <span data-i18n="nav.home">ホーム</span>
+        </a>
+        <a href="create.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span data-i18n="nav.record">記録</span>
         </a>
         <a href="fortune.html" class="nav-item active">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M12 16v-4M12 8h.01"/>
             </svg>
-            <span>Fortune</span>
-        </a>
-        <a href="create.html" class="nav-item nav-add">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+            <span data-i18n="nav.fortune">運勢</span>
         </a>
         <a href="graph.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -129,33 +150,33 @@
                 <line x1="12" y1="20" x2="12" y2="4"/>
                 <line x1="6" y1="20" x2="6" y2="14"/>
             </svg>
-            <span>Graph</span>
+            <span data-i18n="nav.graph">推移</span>
         </a>
         <a href="history.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
             </svg>
-            <span>History</span>
+            <span data-i18n="nav.history">履歴</span>
         </a>
     </nav>
 
     <style>
         .fortune-icon {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto var(--space-md);
             border-radius: 50%;
-            background: var(--gradient-warm);
+            background: var(--gradient-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 40px rgba(250, 112, 154, 0.4);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
         }
 
         .fortune-icon svg {
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
         }
 
         .fortune-intro {
@@ -183,36 +204,16 @@
         .points-value {
             font-size: var(--font-size-2xl);
             font-weight: 700;
-            background: var(--gradient-warm);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .fortune-tips {
-            padding-top: var(--space-xl);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tips-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .tips-list li {
-            padding: var(--space-sm) 0;
-            opacity: 0.8;
-            font-size: var(--font-size-sm);
-        }
-
-        .tips-list li::before {
-            content: "* ";
-        }
-
         /* Result Styles */
         .result-header {
             text-align: center;
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-md);
         }
 
         .result-label {
@@ -225,7 +226,7 @@
         }
 
         .fortune-rank {
-            font-size: var(--font-size-2xl);
+            font-size: var(--font-size-3xl);
             font-weight: 700;
             text-align: center;
             margin-bottom: var(--space-md);
@@ -236,13 +237,33 @@
         }
 
         .fortune-message {
-            font-size: var(--font-size-xl);
+            font-size: var(--font-size-lg);
             text-align: center;
             opacity: 0.9;
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-lg);
             padding: var(--space-lg);
             background: rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-md);
+        }
+
+        .fortune-recommendation {
+            text-align: center;
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            background: rgba(91, 110, 225, 0.15);
+            border: 1px solid rgba(91, 110, 225, 0.3);
+            border-radius: var(--radius-md);
+        }
+
+        .recommendation-label {
+            font-size: var(--font-size-xs);
+            opacity: 0.7;
+            margin-bottom: var(--space-xs);
+        }
+
+        .recommendation-text {
+            font-weight: 500;
+            color: var(--primary-light);
         }
 
         .fortune-weights {
@@ -258,15 +279,14 @@
             border-radius: var(--radius-md);
         }
 
-        .fortune-weight-icon {
-            font-size: 2rem;
-            margin-bottom: var(--space-sm);
-        }
-
         .fortune-weight-label {
             font-size: var(--font-size-sm);
-            opacity: 0.7;
+            opacity: 0.8;
             margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
         }
 
         .fortune-weight-value {
@@ -277,11 +297,8 @@
 
         @keyframes fortuneReveal {
             0% {
-                transform: scale(0.8);
+                transform: scale(0.95);
                 opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
             }
             100% {
                 transform: scale(1);
@@ -290,27 +307,32 @@
         }
 
         .fortune-result.revealed {
-            animation: fortuneReveal 0.6s ease forwards;
+            animation: fortuneReveal 0.4s ease forwards;
         }
     </style>
 
     <script src="js/storage.js"></script>
+    <script src="js/i18n.js"></script>
     <script>
+        let currentFortune = null;
+
         const fortunes = [
-            { rank: 1, message: "Amazing luck today!", effortW: 0.4, luckW: 1.6 },
-            { rank: 2, message: "Great things will happen!", effortW: 0.6, luckW: 1.4 },
-            { rank: 3, message: "Good vibes all around!", effortW: 0.8, luckW: 1.2 },
-            { rank: 4, message: "Solid day ahead!", effortW: 1.0, luckW: 1.0 },
-            { rank: 5, message: "Keep up the good work!", effortW: 1.0, luckW: 1.0 },
-            { rank: 6, message: "Build your luck through effort!", effortW: 1.2, luckW: 0.8 },
-            { rank: 7, message: "Positive thinking changes fortune!", effortW: 1.4, luckW: 0.6 },
-            { rank: 8, message: "Every cloud has a silver lining!", effortW: 1.6, luckW: 0.4 }
+            { rank: 1, rankName: "大吉", message: "最高の運気です！新しいことに挑戦してみましょう", recommendation: "新しいプロジェクトを始める", effortW: 1.5, luckW: 1.5 },
+            { rank: 2, rankName: "吉", message: "良い運気です。努力が実を結ぶ日", recommendation: "大事な決断をする", effortW: 1.3, luckW: 1.3 },
+            { rank: 3, rankName: "中吉", message: "まずまずの運気。コツコツ続けましょう", recommendation: "スキルアップの勉強", effortW: 1.2, luckW: 1.1 },
+            { rank: 4, rankName: "小吉", message: "穏やかな運気。日常を大切に", recommendation: "身の回りの整理整頓", effortW: 1.1, luckW: 1.0 },
+            { rank: 5, rankName: "末吉", message: "慎重に行動すれば運が開けます", recommendation: "計画の見直し", effortW: 1.0, luckW: 0.9 },
+            { rank: 6, rankName: "凶", message: "今日は整える日。無理せず", recommendation: "休息とリラックス", effortW: 0.9, luckW: 0.8 },
+            { rank: 7, rankName: "小凶", message: "焦らず一歩ずつ進みましょう", recommendation: "読書や内省の時間", effortW: 0.8, luckW: 0.7 },
+            { rank: 8, rankName: "大凶", message: "休息と準備の日。次に備えて", recommendation: "早めに休む", effortW: 0.7, luckW: 0.6 }
         ];
 
         // Display current points
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            await I18n.init('ja');
+
             const totalPoints = FortuneTeller.getTotalPoints();
-            document.getElementById('currentPoints').textContent = totalPoints + 'P';
+            document.getElementById('currentPoints').textContent = totalPoints + 'pt';
         });
 
         function tellFortune() {
@@ -328,7 +350,7 @@
                 baseRank = Math.floor(Math.random() * 3) + 5; // 5-7 -> rank 6-8
             }
 
-            const fortune = fortunes[baseRank];
+            currentFortune = fortunes[baseRank];
 
             // Hide form, show result
             document.getElementById('fortuneForm').style.display = 'none';
@@ -337,16 +359,39 @@
             resultDiv.classList.add('revealed');
 
             // Display result
-            document.getElementById('fortuneRank').textContent = `Rank #${fortune.rank}`;
-            document.getElementById('fortuneMessage').textContent = fortune.message;
-            document.getElementById('effortWeight').textContent = `x${fortune.effortW}`;
-            document.getElementById('luckWeight').textContent = `x${fortune.luckW}`;
+            document.getElementById('fortuneRank').textContent = currentFortune.rankName;
+            document.getElementById('fortuneMessage').textContent = currentFortune.message;
+            document.getElementById('recommendationText').textContent = currentFortune.recommendation;
+            document.getElementById('effortWeight').textContent = `x${currentFortune.effortW}`;
+            document.getElementById('luckWeight').textContent = `x${currentFortune.luckW}`;
         }
 
-        function tryAgain() {
-            document.getElementById('fortuneResult').style.display = 'none';
-            document.getElementById('fortuneResult').classList.remove('revealed');
-            document.getElementById('fortuneForm').style.display = 'block';
+        function copyResult() {
+            if (!currentFortune) return;
+
+            const text = `【今日の運勢】${currentFortune.rankName}
+${currentFortune.message}
+おすすめ: ${currentFortune.recommendation}
+努力倍率: x${currentFortune.effortW} / 運倍率: x${currentFortune.luckW}
+#運勢トラッカー`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(I18n.t('fortune.copied'));
+            });
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
     </script>
 </body>

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Good Thing Happened - Fortune Teller</title>
+    <title>良いことがあった - 運勢トラッカー</title>
 </head>
 <body>
     <!-- Background Animation -->
@@ -20,69 +20,90 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Main Content -->
     <div class="app-container">
         <div class="fade-in">
             <!-- Header -->
-            <header class="text-center mb-xl">
+            <header class="app-header">
                 <div class="page-icon good-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                     </svg>
                 </div>
-                <h1 class="page-title">Something Good!</h1>
-                <p class="page-subtitle">Record your lucky moment</p>
+                <h1 class="app-title" data-i18n="record.goodThing.title">良いことがあった</h1>
+                <p class="app-subtitle" data-i18n="record.goodThing.subtitle">幸運を使った記録です</p>
             </header>
 
             <!-- Form Card -->
             <div class="glass-card slide-up">
                 <form id="goodForm">
-                    <!-- Goal Select -->
+                    <!-- Category Chips -->
                     <div class="form-group">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" name="object" required>
-                            <option value="" hidden>Select category</option>
-                            <option value="Test">Test</option>
-                            <option value="Project">Project</option>
-                            <option value="Presentation">Presentation</option>
-                            <option value="Language">Language Learning</option>
-                            <option value="Game">Game</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Career">Career</option>
-                            <option value="Lifestyle">Lifestyle</option>
-                            <option value="Exam">Exam</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <label class="form-label" data-i18n="record.form.category">カテゴリ</label>
+                        <div class="category-chips" id="categoryChips">
+                            <button type="button" class="category-chip" data-value="work">
+                                <span>仕事</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="study">
+                                <span>勉強</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="exercise">
+                                <span>運動</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="health">
+                                <span>健康</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="hobby">
+                                <span>趣味</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="social">
+                                <span>人間関係</span>
+                            </button>
+                            <button type="button" class="category-chip" data-value="other">
+                                <span>その他</span>
+                            </button>
+                        </div>
+                        <input type="hidden" name="object" id="categoryInput" value="" required>
                     </div>
 
                     <!-- Title -->
                     <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-input" name="title" placeholder="What good thing happened?" required>
+                        <label class="form-label" data-i18n="record.form.title">タイトル</label>
+                        <input type="text" class="form-input" name="title"
+                               placeholder="どんな良いことがありましたか？" required>
                     </div>
 
                     <!-- Memo -->
                     <div class="form-group">
-                        <label class="form-label">Memo (optional)</label>
-                        <textarea class="form-textarea" name="detail" placeholder="Add details if you want"></textarea>
+                        <label class="form-label" data-i18n="record.form.memo">メモ</label>
+                        <textarea class="form-textarea" name="detail"
+                                  data-i18n-placeholder="record.form.memoPlaceholder"
+                                  placeholder="詳細を記入（任意）"></textarea>
                     </div>
 
                     <!-- Date -->
                     <div class="form-group">
-                        <label class="form-label">Date</label>
+                        <label class="form-label" data-i18n="record.form.date">日付</label>
                         <input type="date" class="form-input" name="due" id="regist_date" required>
                     </div>
 
                     <!-- Point Info -->
                     <div class="form-group">
                         <div class="point-info-card">
-                            <div class="point-info-icon">*</div>
+                            <div class="point-info-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px;">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                            </div>
                             <div class="point-info-text">
-                                <span class="point-info-label">Luck Used</span>
-                                <span class="point-info-value">-1P</span>
+                                <span class="point-info-label" data-i18n="record.goodThing.pointNote">運を1消費（-1pt）</span>
+                                <span class="point-info-value">-1pt</span>
                             </div>
                         </div>
-                        <p class="point-hint">* Good things = Luck used! Save up for next time</p>
+                        <p class="point-hint">良いことがあった = 運を使った証拠。次のために貯めましょう！</p>
                     </div>
 
                     <!-- Hidden fields -->
@@ -92,12 +113,12 @@
 
                     <!-- Buttons -->
                     <div class="btn-group">
-                        <a href="index.html" class="btn btn-secondary">Back</a>
+                        <a href="index.html" class="btn btn-secondary" data-i18n="record.form.cancel">キャンセル</a>
                         <button type="submit" class="btn btn-success btn-lg" style="flex: 2;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
                                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                             </svg>
-                            Record
+                            <span data-i18n="record.form.save">保存する</span>
                         </button>
                     </div>
                 </form>
@@ -105,27 +126,28 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Home</span>
+            <span data-i18n="nav.home">ホーム</span>
+        </a>
+        <a href="create.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span data-i18n="nav.record">記録</span>
         </a>
         <a href="fortune.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M12 16v-4M12 8h.01"/>
             </svg>
-            <span>Fortune</span>
-        </a>
-        <a href="create.html" class="nav-item nav-add active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+            <span data-i18n="nav.fortune">運勢</span>
         </a>
         <a href="graph.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -133,21 +155,21 @@
                 <line x1="12" y1="20" x2="12" y2="4"/>
                 <line x1="6" y1="20" x2="6" y2="14"/>
             </svg>
-            <span>Graph</span>
+            <span data-i18n="nav.graph">推移</span>
         </a>
         <a href="history.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
             </svg>
-            <span>History</span>
+            <span data-i18n="nav.history">履歴</span>
         </a>
     </nav>
 
     <style>
         .page-icon {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             margin: 0 auto var(--space-md);
             border-radius: 50%;
             display: flex;
@@ -156,26 +178,27 @@
         }
 
         .page-icon svg {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
         }
 
         .good-icon {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            box-shadow: 0 10px 40px rgba(79, 172, 254, 0.4);
+            background: var(--gradient-good);
+            box-shadow: 0 8px 32px rgba(224, 123, 123, 0.4);
         }
 
         .point-info-card {
             display: flex;
             align-items: center;
             gap: var(--space-md);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(224, 123, 123, 0.15);
+            border: 1px solid rgba(224, 123, 123, 0.3);
             padding: var(--space-lg);
             border-radius: var(--radius-md);
         }
 
         .point-info-icon {
-            font-size: 2rem;
+            color: var(--secondary-light);
         }
 
         .point-info-text {
@@ -203,13 +226,54 @@
     </style>
 
     <script src="js/storage.js"></script>
+    <script src="js/i18n.js"></script>
     <script>
-        // Set today's date
-        document.getElementById('regist_date').value = FortuneTeller.getTodayString();
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await I18n.init('ja');
+
+            // Set today's date
+            document.getElementById('regist_date').value = FortuneTeller.getTodayString();
+        });
+
+        // Category selection
+        const categoryChips = document.querySelectorAll('.category-chip');
+        const categoryInput = document.getElementById('categoryInput');
+
+        categoryChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                categoryChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                categoryInput.value = this.dataset.value;
+            });
+        });
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success'
+                        ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+                        : '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
 
         // Form submission
         document.getElementById('goodForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Validate category
+            if (!categoryInput.value) {
+                showToast('カテゴリを選択してください', 'error');
+                return;
+            }
 
             const formData = new FormData(this);
             const post = {
@@ -223,7 +287,11 @@
             };
 
             FortuneTeller.addPost(post);
-            window.location.href = 'index.html';
+            showToast(I18n.t('record.toast.saved'));
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
         });
     </script>
 </body>

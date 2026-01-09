@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>設定 - 運勢トラッカー</title>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="floating-shapes">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Reset Confirmation Dialog -->
+    <div class="dialog-overlay" id="resetDialog">
+        <div class="dialog">
+            <h3 class="dialog-title" data-i18n="settings.data.resetConfirm">本当にすべてのデータを削除しますか？</h3>
+            <p class="dialog-message" data-i18n="settings.data.resetConfirmFinal">この操作は取り消せません。本当に削除しますか？</p>
+            <div class="dialog-actions">
+                <button class="btn btn-secondary" onclick="closeResetDialog()">キャンセル</button>
+                <button class="btn btn-danger" onclick="executeReset()">削除する</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="app-container">
+        <div class="fade-in">
+            <!-- Header -->
+            <header class="app-header">
+                <h1 class="app-title" data-i18n="settings.title">設定</h1>
+            </header>
+
+            <!-- Settings List -->
+            <div class="settings-list">
+                <!-- Goal Points -->
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <div class="settings-item-title" data-i18n="settings.goalPoints.title">目標運ポイント</div>
+                        <div class="settings-item-desc" data-i18n="settings.goalPoints.description">達成を目指すポイント数</div>
+                    </div>
+                    <div class="number-input-group">
+                        <input type="number" class="number-input" id="goalPointsInput" min="10" max="1000" step="10" value="100">
+                        <span>pt</span>
+                    </div>
+                </div>
+
+                <!-- Daily Limit -->
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <div class="settings-item-title" data-i18n="settings.dailyLimit.title">1日の獲得上限</div>
+                        <div class="settings-item-desc" data-i18n="settings.dailyLimit.description">1日に獲得できる最大ポイント</div>
+                    </div>
+                    <div class="number-input-group">
+                        <input type="number" class="number-input" id="dailyLimitInput" min="1" max="100" step="1" value="10">
+                        <span>pt</span>
+                    </div>
+                </div>
+
+                <!-- Point Rule -->
+                <div class="settings-item" style="flex-direction: column; align-items: flex-start;">
+                    <div class="settings-item-info" style="margin-bottom: var(--space-md);">
+                        <div class="settings-item-title" data-i18n="settings.pointRule.title">運ポイントルール</div>
+                        <div class="settings-item-desc" data-i18n="settings.pointRule.description">良いことがあった時のポイント変動</div>
+                    </div>
+                    <div class="radio-group" id="pointRuleGroup">
+                        <label class="radio-option">
+                            <input type="radio" name="pointRule" value="subtract" checked>
+                            <span class="radio-label">努力+ / 良いこと-1（デフォルト）</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="pointRule" value="add">
+                            <span class="radio-label">努力+ / 良いこと+1</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="pointRule" value="none">
+                            <span class="radio-label">努力+ / 良いこと変動なし</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div class="section-header mt-xl">
+                <h2 class="section-title" data-i18n="settings.data.title">データ管理</h2>
+            </div>
+
+            <div class="settings-list">
+                <!-- Export -->
+                <div class="settings-item" onclick="exportData()" style="cursor: pointer;">
+                    <div class="settings-item-info">
+                        <div class="settings-item-title" data-i18n="settings.data.export">データをエクスポート</div>
+                        <div class="settings-item-desc">JSONファイルとしてダウンロード</div>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; opacity: 0.5;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                </div>
+
+                <!-- Import -->
+                <div class="settings-item" style="cursor: pointer;">
+                    <label style="display: flex; align-items: center; width: 100%; cursor: pointer;">
+                        <div class="settings-item-info">
+                            <div class="settings-item-title" data-i18n="settings.data.import">データをインポート</div>
+                            <div class="settings-item-desc">JSONファイルから復元</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; opacity: 0.5;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <input type="file" id="importInput" accept=".json" style="display: none;" onchange="importData(event)">
+                    </label>
+                </div>
+
+                <!-- Reset -->
+                <div class="settings-item danger" onclick="confirmReset()" style="cursor: pointer;">
+                    <div class="settings-item-info">
+                        <div class="settings-item-title" style="color: var(--secondary);" data-i18n="settings.data.reset">データをリセット</div>
+                        <div class="settings-item-desc">すべての記録を削除</div>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: var(--secondary);">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Help Link -->
+            <a href="help.html" class="btn btn-outline mt-xl" style="width: 100%;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span data-i18n="nav.help">使い方</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span data-i18n="nav.home">ホーム</span>
+        </a>
+        <a href="create.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span data-i18n="nav.record">記録</span>
+        </a>
+        <a href="fortune.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4M12 8h.01"/>
+            </svg>
+            <span data-i18n="nav.fortune">運勢</span>
+        </a>
+        <a href="graph.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            <span data-i18n="nav.graph">推移</span>
+        </a>
+        <a href="history.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span data-i18n="nav.history">履歴</span>
+        </a>
+    </nav>
+
+    <style>
+        .section-header {
+            margin-bottom: var(--space-md);
+        }
+
+        .section-title {
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            width: 100%;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .radio-label {
+            font-size: var(--font-size-sm);
+        }
+
+        .settings-item.danger {
+            border-color: rgba(224, 123, 123, 0.3);
+        }
+
+        .settings-item.danger:hover {
+            background: rgba(224, 123, 123, 0.1);
+        }
+    </style>
+
+    <script src="js/storage.js"></script>
+    <script src="js/i18n.js"></script>
+    <script>
+        let resetConfirmCount = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await I18n.init('ja');
+
+            // Load current settings
+            const settings = FortuneTeller.getSettings();
+            document.getElementById('goalPointsInput').value = settings.goalPoints;
+            document.getElementById('dailyLimitInput').value = settings.dailyLimit;
+
+            // Set point rule radio
+            const ruleRadio = document.querySelector(`input[name="pointRule"][value="${settings.pointRule}"]`);
+            if (ruleRadio) ruleRadio.checked = true;
+
+            // Save on change
+            document.getElementById('goalPointsInput').addEventListener('change', function() {
+                FortuneTeller.updateSetting('goalPoints', parseInt(this.value) || 100);
+                showToast('設定を保存しました');
+            });
+
+            document.getElementById('dailyLimitInput').addEventListener('change', function() {
+                FortuneTeller.updateSetting('dailyLimit', parseInt(this.value) || 10);
+                showToast('設定を保存しました');
+            });
+
+            document.querySelectorAll('input[name="pointRule"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    FortuneTeller.updateSetting('pointRule', this.value);
+                    showToast('設定を保存しました');
+                });
+            });
+        });
+
+        function exportData() {
+            const data = FortuneTeller.exportData();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fortune-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(I18n.t('settings.data.exported'));
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    FortuneTeller.importData(data);
+                    showToast(I18n.t('settings.data.imported'));
+                    setTimeout(() => location.reload(), 1000);
+                } catch (error) {
+                    showToast('インポートに失敗しました', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function confirmReset() {
+            resetConfirmCount = 0;
+            document.getElementById('resetDialog').classList.add('active');
+        }
+
+        function closeResetDialog() {
+            document.getElementById('resetDialog').classList.remove('active');
+        }
+
+        function executeReset() {
+            FortuneTeller.resetData();
+            closeResetDialog();
+            showToast(I18n.t('settings.data.resetComplete'));
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${type === 'success'
+                        ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'
+                        : '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

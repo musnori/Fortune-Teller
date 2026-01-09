@@ -2,6 +2,55 @@
 const FortuneTeller = {
     STORAGE_KEY: 'fortune_teller_posts',
     POINTS_KEY: 'fortune_teller_daily_points',
+    SETTINGS_KEY: 'fortune_teller_settings',
+    VERSION_KEY: 'fortune_teller_version',
+    CURRENT_VERSION: 2,
+
+    // Default settings
+    defaultSettings: {
+        goalPoints: 100,
+        dailyLimit: 10,
+        pointRule: 'subtract', // 'subtract' | 'add' | 'none'
+        darkMode: false
+    },
+
+    // Initialize and migrate data if needed
+    init() {
+        const version = localStorage.getItem(this.VERSION_KEY);
+        if (!version || parseInt(version) < this.CURRENT_VERSION) {
+            this.migrateData();
+            localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION.toString());
+        }
+        return this;
+    },
+
+    // Migrate data from v1 to v2 (preserves all existing data)
+    migrateData() {
+        // Existing data is already compatible, just ensure settings exist
+        if (!localStorage.getItem(this.SETTINGS_KEY)) {
+            this.saveSettings(this.defaultSettings);
+        }
+        // Recalculate daily points from posts
+        const posts = this.getPosts();
+        const dates = [...new Set(posts.map(p => p.due))];
+        dates.forEach(date => this.updateDailyPoints(date));
+    },
+
+    // Settings management
+    getSettings() {
+        const data = localStorage.getItem(this.SETTINGS_KEY);
+        return data ? { ...this.defaultSettings, ...JSON.parse(data) } : { ...this.defaultSettings };
+    },
+
+    saveSettings(settings) {
+        localStorage.setItem(this.SETTINGS_KEY, JSON.stringify(settings));
+    },
+
+    updateSetting(key, value) {
+        const settings = this.getSettings();
+        settings[key] = value;
+        this.saveSettings(settings);
+    },
 
     // Get all posts
     getPosts() {
@@ -163,5 +212,152 @@ const FortuneTeller = {
     // Get today's date string
     getTodayString() {
         return new Date().toISOString().split('T')[0];
+    },
+
+    // Get today's summary (effort count, good thing count)
+    getTodaySummary() {
+        const today = this.getTodayString();
+        const posts = this.getPosts().filter(p => p.due === today);
+
+        return {
+            effortCount: posts.filter(p => p.effort === 1).length,
+            goodThingCount: posts.filter(p => p.lucky === 1).length,
+            totalPoints: posts.reduce((sum, p) => sum + p.point, 0)
+        };
+    },
+
+    // Calculate streak (consecutive days with records)
+    getStreak() {
+        const posts = this.getPosts();
+        if (posts.length === 0) return 0;
+
+        // Get unique dates sorted in descending order
+        const dates = [...new Set(posts.map(p => p.due))].sort((a, b) => new Date(b) - new Date(a));
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayStr = this.getTodayString();
+
+        // Check if there's a record today or yesterday
+        const latestDate = new Date(dates[0]);
+        latestDate.setHours(0, 0, 0, 0);
+
+        const diffDays = Math.floor((today - latestDate) / (1000 * 60 * 60 * 24));
+
+        // If latest record is more than 1 day ago, streak is broken
+        if (diffDays > 1) return 0;
+
+        let streak = 0;
+        let currentDate = diffDays === 0 ? today : latestDate;
+
+        for (const dateStr of dates) {
+            const date = new Date(dateStr);
+            date.setHours(0, 0, 0, 0);
+
+            const expectedDate = new Date(currentDate);
+            expectedDate.setDate(expectedDate.getDate() - streak);
+            expectedDate.setHours(0, 0, 0, 0);
+
+            if (date.getTime() === expectedDate.getTime()) {
+                streak++;
+            } else if (date.getTime() < expectedDate.getTime()) {
+                // Found a gap, stop counting
+                break;
+            }
+        }
+
+        return streak;
+    },
+
+    // Get points for a specific period
+    getPointsForPeriod(days) {
+        const posts = this.getPosts();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (days === 'all') {
+            return posts;
+        }
+
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - days + 1);
+
+        return posts.filter(p => {
+            const postDate = new Date(p.due);
+            postDate.setHours(0, 0, 0, 0);
+            return postDate >= startDate && postDate <= today;
+        });
+    },
+
+    // Get statistics for a period
+    getStats(days = 'all') {
+        const posts = this.getPointsForPeriod(days);
+        const dailyPoints = this.getDailyPoints();
+
+        if (posts.length === 0) {
+            return { total: 0, average: 0, max: 0, streak: this.getStreak() };
+        }
+
+        const dates = [...new Set(posts.map(p => p.due))];
+        const dailyTotals = dates.map(date => {
+            return posts.filter(p => p.due === date).reduce((sum, p) => sum + p.point, 0);
+        });
+
+        const total = dailyTotals.reduce((sum, t) => sum + t, 0);
+        const average = dates.length > 0 ? Math.round(total / dates.length * 10) / 10 : 0;
+        const max = Math.max(...dailyTotals, 0);
+
+        return {
+            total,
+            average,
+            max,
+            streak: this.getStreak()
+        };
+    },
+
+    // Export all data as JSON
+    exportData() {
+        return {
+            version: this.CURRENT_VERSION,
+            exportedAt: new Date().toISOString(),
+            posts: this.getPosts(),
+            dailyPoints: this.getDailyPoints(),
+            settings: this.getSettings()
+        };
+    },
+
+    // Import data from JSON
+    importData(data) {
+        if (!data || !data.posts) {
+            throw new Error('Invalid data format');
+        }
+
+        this.savePosts(data.posts);
+
+        if (data.dailyPoints) {
+            this.saveDailyPoints(data.dailyPoints);
+        } else {
+            // Recalculate daily points
+            const dates = [...new Set(data.posts.map(p => p.due))];
+            dates.forEach(date => this.updateDailyPoints(date));
+        }
+
+        if (data.settings) {
+            this.saveSettings({ ...this.defaultSettings, ...data.settings });
+        }
+
+        localStorage.setItem(this.VERSION_KEY, this.CURRENT_VERSION.toString());
+    },
+
+    // Reset all data
+    resetData() {
+        localStorage.removeItem(this.STORAGE_KEY);
+        localStorage.removeItem(this.POINTS_KEY);
+        localStorage.removeItem(this.SETTINGS_KEY);
+        localStorage.removeItem(this.VERSION_KEY);
+        this.init();
     }
 };
+
+// Initialize on load
+FortuneTeller.init();
