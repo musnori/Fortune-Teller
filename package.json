@@ -1,0 +1,24 @@
+{
+  "name": "fortune-teller",
+  "version": "1.0.0",
+  "description": "Fortune Teller - Habit tracking and fortune telling app",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/js/setup.js"],
+    "testMatch": ["**/tests/js/**/*.test.js"],
+    "collectCoverageFrom": [
+      "public/js/**/*.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["text", "html"]
+  }
+}
