@@ -109,11 +109,21 @@
     </nav>
 
     <style>
+        /* UX改善: ヘッダーをコンパクトに */
+        .app-header {
+            padding: var(--space-sm) 0 var(--space-md);
+        }
+
+        /* UX改善: 検索ボックスの高さを確保 */
+        .search-input {
+            min-height: 48px;
+        }
+
         .history-card-type {
             display: inline-flex;
             align-items: center;
             gap: var(--space-xs);
-            font-size: var(--font-size-xs);
+            font-size: var(--font-size-sm);  /* UX改善: 読みやすく */
             padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-sm);
             margin-left: var(--space-sm);
@@ -137,14 +147,41 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .category-map {
-            work: "仕事",
-            study: "勉強",
-            exercise: "運動",
-            health: "健康",
-            hobby: "趣味",
-            social: "人間関係",
-            other: "その他"
+        /* UX改善: 削除ボタンを右端に配置し、誤タップ防止 */
+        .history-card-actions {
+            display: flex;
+            justify-content: flex-end;  /* UX改善: 右寄せ */
+            margin-top: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* UX改善: 削除ボタンのタップ領域を確保 */
+        .history-card-actions .btn {
+            min-height: 44px;
+            min-width: 80px;
+        }
+
+        /* UX改善: 日付グループの視認性を向上 */
+        .daily-summary {
+            margin-top: var(--space-lg);
+            margin-bottom: var(--space-sm);
+        }
+
+        .daily-summary-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .daily-summary-label {
+            font-size: var(--font-size-xs);
+            opacity: 0.7;
+        }
+
+        /* UX改善: 履歴カードの余白を調整 */
+        .history-card {
+            margin-bottom: var(--space-sm);
         }
     </style>
 

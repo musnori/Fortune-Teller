@@ -232,10 +232,11 @@ body {
 }
 
 /* App Container */
+/* UX改善: ボトムナビとの余白を確保 */
 .app-container {
     min-height: 100vh;
     padding: var(--space-lg);
-    padding-bottom: 100px;
+    padding-bottom: 110px;  /* UX改善: ナビ高さ72px + 余白 */
     max-width: 600px;
     margin: 0 auto;
 }
@@ -934,15 +935,16 @@ body {
     }
 }
 
-/* Safe Area for notched phones */
+/* Safe Area for notched phones (iPhone X+) */
+/* UX改善: セーフエリアの余白を適切に確保 */
 @supports (padding: max(0px)) {
     .bottom-nav {
         padding-bottom: max(var(--space-sm), env(safe-area-inset-bottom));
-        height: calc(70px + env(safe-area-inset-bottom));
+        height: calc(72px + env(safe-area-inset-bottom));  /* UX改善: 高さを更新 */
     }
 
     .app-container {
-        padding-bottom: calc(100px + env(safe-area-inset-bottom));
+        padding-bottom: calc(110px + env(safe-area-inset-bottom));  /* UX改善: ナビとの余白確保 */
     }
 }
 
@@ -1039,9 +1041,9 @@ body {
 }
 
 .summary-card-label {
-    font-size: var(--font-size-xs);
-    opacity: 0.7;
-    margin-top: var(--space-xs);
+    font-size: var(--font-size-sm);  /* UX改善: 12px → 14px で視認性向上 */
+    opacity: 0.8;  /* UX改善: コントラスト向上 */
+    margin-top: var(--space-sm);  /* UX改善: 間隔を広げる */
 }
 
 .summary-card.effort .summary-card-value {
@@ -1213,10 +1215,11 @@ body {
 }
 
 /* Category Chips */
+/* UX改善: カテゴリチップのタップ領域を44px以上に拡大 */
 .category-chips {
     display: flex;
+    flex-wrap: wrap;  /* UX改善: 折り返しで全チップを表示 */
     gap: var(--space-sm);
-    overflow-x: auto;
     padding: var(--space-sm) 0;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -1229,13 +1232,15 @@ body {
 .category-chip {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-xs);
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-md) var(--space-lg);  /* UX改善: 16px 24px に拡大 */
+    min-height: 48px;  /* UX改善: 最小タップ領域確保 */
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-full);
     color: var(--white);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-md);  /* UX改善: 14px → 16px */
     white-space: nowrap;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -1256,20 +1261,24 @@ body {
 }
 
 /* Point Presets */
+/* UX改善: ポイントプリセットのタップ領域を拡大 */
 .point-presets {
     display: flex;
-    gap: var(--space-sm);
+    gap: var(--space-md);  /* UX改善: 間隔を広げて誤タップ防止 */
     justify-content: center;
-    margin-top: var(--space-md);
+    margin-top: var(--space-lg);
 }
 
 .point-preset {
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-md) var(--space-xl);  /* UX改善: タップ領域拡大 */
+    min-height: 48px;  /* UX改善: 最小48px確保 */
+    min-width: 56px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);  /* UX改善: 角丸を大きく */
     color: var(--white);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-md);  /* UX改善: 16pxに拡大 */
+    font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-fast);
 }
@@ -1347,6 +1356,7 @@ body {
 }
 
 /* Filter Tabs */
+/* UX改善: フィルタータブのタップ領域を拡大 */
 .filter-tabs {
     display: flex;
     gap: var(--space-sm);
@@ -1354,19 +1364,25 @@ body {
 }
 
 .filter-tab {
-    padding: var(--space-sm) var(--space-lg);
+    padding: var(--space-md) var(--space-xl);  /* UX改善: タップ領域拡大 */
+    min-height: 48px;  /* UX改善: 最小タップ領域確保 */
     background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: var(--radius-full);
     color: rgba(255, 255, 255, 0.7);
     font-family: var(--font-main);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-md);  /* UX改善: 16pxに拡大 */
+    font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-fast);
 }
 
 .filter-tab:hover {
     background: rgba(255, 255, 255, 0.15);
+}
+
+.filter-tab:active {
+    transform: scale(0.97);  /* UX改善: タップフィードバック */
 }
 
 .filter-tab.active {
@@ -1544,18 +1560,19 @@ body {
 }
 
 /* Updated Bottom Navigation (5 items) */
+/* UX改善: ナビゲーションのタップ領域と視認性を向上 */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    height: 72px;  /* UX改善: 高さを拡大 */
     background: rgba(30, 30, 40, 0.95);
     backdrop-filter: blur(20px);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0 var(--space-sm);
+    padding: 0 var(--space-xs);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     z-index: var(--z-fixed);
 }
@@ -1567,19 +1584,25 @@ body {
     justify-content: center;
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    padding: var(--space-xs) var(--space-sm);
-    min-width: 56px;
+    padding: var(--space-sm) var(--space-md);  /* UX改善: パディング拡大 */
+    min-width: 64px;  /* UX改善: 最小幅拡大 */
+    min-height: 56px;  /* UX改善: タップ領域確保 */
     transition: all var(--transition-fast);
+    border-radius: var(--radius-sm);  /* UX改善: タップフィードバック用 */
+}
+
+.nav-item:active {
+    background: rgba(255, 255, 255, 0.1);  /* UX改善: タップ時のフィードバック */
 }
 
 .nav-item svg {
-    width: 22px;
-    height: 22px;
-    margin-bottom: 2px;
+    width: 24px;  /* UX改善: アイコンサイズ拡大 */
+    height: 24px;
+    margin-bottom: 4px;  /* UX改善: 間隔調整 */
 }
 
 .nav-item span {
-    font-size: 10px;
+    font-size: 11px;  /* UX改善: ラベルサイズ拡大 */
     font-weight: 500;
 }
 

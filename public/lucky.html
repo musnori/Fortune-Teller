@@ -167,10 +167,11 @@
     </nav>
 
     <style>
+        /* UX改善: ヘッダーをコンパクトにして、フォームを親指が届く位置に */
         .page-icon {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto var(--space-md);
+            width: 48px;  /* UX改善: 72px → 48px */
+            height: 48px;
+            margin: 0 auto var(--space-sm);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -178,27 +179,57 @@
         }
 
         .page-icon svg {
-            width: 40px;
-            height: 40px;
+            width: 24px;  /* UX改善: 40px → 24px */
+            height: 24px;
         }
 
         .good-icon {
             background: var(--gradient-good);
-            box-shadow: 0 8px 32px rgba(224, 123, 123, 0.4);
+            box-shadow: 0 4px 16px rgba(224, 123, 123, 0.3);
         }
 
+        /* UX改善: ヘッダーの余白を削減 */
+        .app-header {
+            padding: var(--space-sm) 0 var(--space-md);
+        }
+
+        .app-title {
+            font-size: var(--font-size-lg);
+        }
+
+        .app-subtitle {
+            font-size: var(--font-size-sm);
+            opacity: 0.7;
+        }
+
+        /* UX改善: カードの上パディングを削減 */
+        .glass-card {
+            padding-top: var(--space-lg);
+        }
+
+        /* UX改善: フォームグループの余白を最適化 */
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        /* UX改善: ポイント情報カードをシンプルに */
         .point-info-card {
             display: flex;
             align-items: center;
             gap: var(--space-md);
             background: rgba(224, 123, 123, 0.15);
             border: 1px solid rgba(224, 123, 123, 0.3);
-            padding: var(--space-lg);
+            padding: var(--space-md) var(--space-lg);  /* UX改善: パディング調整 */
             border-radius: var(--radius-md);
         }
 
         .point-info-icon {
             color: var(--secondary-light);
+        }
+
+        .point-info-icon svg {
+            width: 28px;  /* UX改善: アイコンサイズ調整 */
+            height: 28px;
         }
 
         .point-info-text {
@@ -217,11 +248,18 @@
             color: var(--secondary-light);
         }
 
+        /* UX改善: ヒント文を簡潔に */
         .point-hint {
-            font-size: var(--font-size-xs);
-            opacity: 0.6;
-            margin-top: var(--space-sm);
+            font-size: var(--font-size-sm);  /* UX改善: 読みやすく */
+            opacity: 0.7;
+            margin-top: var(--space-md);
             text-align: center;
+        }
+
+        /* UX改善: ボタングループをナビから十分離す */
+        .btn-group {
+            margin-top: var(--space-xl);
+            padding-bottom: var(--space-md);
         }
     </style>
 

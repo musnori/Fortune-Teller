@@ -24,13 +24,8 @@
     <div class="app-container">
         <div class="fade-in">
             <!-- App Header -->
-            <header class="app-header" style="position: relative;">
-                <a href="settings.html" class="settings-link" title="設定">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                </a>
+            <!-- UX改善: 設定リンクを削除し、ボトムナビで対応 -->
+            <header class="app-header">
                 <h1 class="app-title" data-i18n="app.name">運勢トラッカー</h1>
                 <p class="app-subtitle" data-i18n="app.tagline">毎日の努力で「運」を育てる</p>
             </header>
@@ -51,10 +46,11 @@
                                 stroke-dashoffset="264"
                                 id="progressRing"/>
                     </svg>
+                    <!-- UX改善: 目標までの進捗を明確に表示 -->
                     <div class="ring-gauge-center">
                         <div class="ring-gauge-value" id="totalPoint">0</div>
                         <div class="ring-gauge-unit">pt</div>
-                        <div class="ring-gauge-label" data-i18n="home.currentPoints">現在の運ポイント</div>
+                        <div class="ring-gauge-label" id="goalLabel">目標: 0pt</div>
                     </div>
                 </div>
 
@@ -122,6 +118,7 @@
     </div>
 
     <!-- Bottom Navigation -->
+    <!-- UX改善: 設定を追加し、親指でアクセスしやすく -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item active">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -152,12 +149,12 @@
             </svg>
             <span data-i18n="nav.graph">推移</span>
         </a>
-        <a href="history.html" class="nav-item">
+        <a href="settings.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
             </svg>
-            <span data-i18n="nav.history">履歴</span>
+            <span>設定</span>
         </a>
     </nav>
 
@@ -184,6 +181,13 @@
             const circumference = 2 * Math.PI * 42; // r=42
             const offset = circumference * (1 - progress);
             document.getElementById('progressRing').style.strokeDashoffset = offset;
+
+            // UX改善: 目標ラベルに現在/目標を表示
+            const remaining = Math.max(0, goalPoints - totalPoints);
+            document.getElementById('goalLabel').textContent =
+                totalPoints >= goalPoints
+                    ? `🎉 目標${goalPoints}pt達成！`
+                    : `目標まであと ${remaining}pt`;
 
             // Update mode badge
             const modeBadge = document.getElementById('modeBadge');
